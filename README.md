@@ -6,3 +6,36 @@ Goals:
 * TypeScript for modern, statically typed browser development
 * Mobile web and touch support
 
+## Development
+
+Clone:
+```
+git clone git@github.com:codyebberson/wglt-roguelike-tutorial.git
+```
+
+Start webpack:
+```
+npm run dev
+```
+
+## Notes
+
+These docs assume some basic familiarity with Node, npm, and TypeScript.
+
+If you've never used TypeScript, but you have used JavaScript, then you should
+be able to follow along.  Please forgive my efforts to convert you.
+
+### Part 0 - Setting Up
+
+npm dependencies:
+* [typescript](https://www.npmjs.com/package/typescript) - to be able to use the TypeScript language
+* [webpack](https://www.npmjs.com/package/webpack) and [webpack-cli](https://www.npmjs.com/package/webpack-cli) - to bundle everything into a single .js output
+* [ts-loader](https://www.npmjs.com/package/ts-loader) - to connect webpack and typescript
+* [wglt](https://www.npmjs.com/package/wglt) - for roguelike development
+
+### Part 1 - Drawing the ‘@’ symbol and moving it around
+
+Most of this exercise is provided for free by WGLT.  The main task is to initialize the WGLT library.
+
+## Credits:
+* Art from [Scroll-o-Sprites](https://www.reddit.com/r/roguelikedev/comments/1dmbxr/art_scrollosprites/)
