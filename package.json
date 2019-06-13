@@ -1,0 +1,38 @@
+{
+  "name": "wglt-roguelike-tutorial",
+  "version": "1.0.0",
+  "description": "WGLT Roguelike Tutorial",
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production",
+    "check": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc -p .",
+    "fix": "gts fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codyebberson/wglt-roguelike-tutorial.git"
+  },
+  "keywords": [
+    "wglt",
+    "roguelike",
+    "tutorial"
+  ],
+  "author": "Cody Ebberson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codyebberson/wglt-roguelike-tutorial/issues"
+  },
+  "homepage": "https://github.com/codyebberson/wglt-roguelike-tutorial#readme",
+  "devDependencies": {
+    "gts": "^1.0.0",
+    "ts-loader": "^6.0.2",
+    "typescript": "^3.5.1",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.4",
+    "wglt": "^0.1.61"
+  }
+}
