@@ -37,5 +37,9 @@ npm dependencies:
 
 Most of this exercise is provided for free by WGLT.  The main task is to initialize the WGLT library.
 
+### Part 2 - The generic Entity, the render functions, and the map
+
+Almost everything is provided for free by WGLT.  Added some test walls to the otherwise empty map.
+
 ## Credits:
 * Art from [Scroll-o-Sprites](https://www.reddit.com/r/roguelikedev/comments/1dmbxr/art_scrollosprites/)

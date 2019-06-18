@@ -34,6 +34,12 @@ for (let y = 1; y < MAP_HEIGHT - 1; y++) {
   }
 }
 
+// Add some test walls
+game.tileMap.setTile(30, 32, 0, Tiles.WALL1);
+game.tileMap.setBlocked(30, 32, true);
+game.tileMap.setTile(34, 32, 0, Tiles.WALL1);
+game.tileMap.setBlocked(34, 32, true);
+
 // Create the player.
 // See the Player class for more details.
 // Our player is a special entity that receives user input.
