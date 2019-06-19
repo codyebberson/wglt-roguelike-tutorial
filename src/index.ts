@@ -1,10 +1,6 @@
 import { App, Rect, Game, Vec2 } from 'wglt';
 import { Player } from './player';
-import { Tiles } from './tiles';
-
-// Map constants
-const MAP_WIDTH = 64;
-const MAP_HEIGHT = 64;
+import { MAP_WIDTH, MAP_HEIGHT, MapGenerator } from './mapgen';
 
 // Create a new application.
 // WGLT App sets up the canvas, WebGL, keyboard, mouse, etc.
@@ -24,22 +20,6 @@ const game = new Game(app, {
   focusMargins: new Vec2(0, 40),
 });
 
-// Create the map.
-// A Game object includes an empty map by default.
-// For now, we're going to set all tiles to non-blocking floor tiles.
-for (let y = 1; y < MAP_HEIGHT - 1; y++) {
-  for (let x = 1; x < MAP_WIDTH - 1; x++) {
-    game.tileMap.setTile(x, y, 0, Tiles.FLOOR);
-    game.tileMap.setBlocked(x, y, false);
-  }
-}
-
-// Add some test walls
-game.tileMap.setTile(30, 32, 0, Tiles.WALL1);
-game.tileMap.setBlocked(30, 32, true);
-game.tileMap.setTile(34, 32, 0, Tiles.WALL1);
-game.tileMap.setBlocked(34, 32, true);
-
 // Create the player.
 // See the Player class for more details.
 // Our player is a special entity that receives user input.
@@ -47,11 +27,8 @@ const player = new Player(game, 32, 32);
 game.player = player;
 game.entities.add(player);
 
-// Now that we have a player and an empty map,
-// reset the viewport to be centered on the player
-// and recompute the field-of-view.
-game.resetViewport();
-game.recomputeFov();
+// Create the map.
+new MapGenerator(game).makeMap();
 
 // Finally, set the game to be the active state.
 // (Apps can have different states, such as menus)
