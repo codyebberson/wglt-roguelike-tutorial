@@ -41,5 +41,9 @@ Most of this exercise is provided for free by WGLT.  The main task is to initial
 
 Almost everything is provided for free by WGLT.  Added some test walls to the otherwise empty map.
 
+### Part 3 - Dungeon generation
+
+Verbatim port of the Python tutorial to Typescript.
+
 ## Credits:
 * Art from [Scroll-o-Sprites](https://www.reddit.com/r/roguelikedev/comments/1dmbxr/art_scrollosprites/)
