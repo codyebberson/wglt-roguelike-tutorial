@@ -45,5 +45,9 @@ Almost everything is provided for free by WGLT.  Added some test walls to the ot
 
 Verbatim port of the Python tutorial to Typescript.
 
+### Part 4 - Field of View
+
+Nothing to do!  Field of view is included in the WGLT library.  The only notable difference is that WGLT darkens (50% alpha black overlay) tiles, whereas the Python tutorial uses different colors entirely.
+
 ## Credits:
 * Art from [Scroll-o-Sprites](https://www.reddit.com/r/roguelikedev/comments/1dmbxr/art_scrollosprites/)
