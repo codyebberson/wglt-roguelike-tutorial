@@ -11,5 +11,6 @@ export declare class MapGenerator {
     private createRoom;
     private createHTunnel;
     private createVTunnel;
+    private placeEntities;
     private randomWall;
 }
