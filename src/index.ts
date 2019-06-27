@@ -15,8 +15,8 @@ const app = new App({
 // WGLT Game manages entities, turns, player input, etc.
 const game = new Game(app, {
   mapSize: new Rect(0, 0, MAP_WIDTH, MAP_HEIGHT),
-  horizontalViewDistance: 5,
-  verticalViewDistance: 5,
+  horizontalViewDistance: 6,
+  verticalViewDistance: 6,
   focusMargins: new Vec2(0, 40),
 });
 

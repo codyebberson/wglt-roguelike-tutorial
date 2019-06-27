@@ -1,15 +1,17 @@
-import { Game, TileMap, Rect, RNG } from 'wglt';
+import { Game, TileMap, Rect, RNG, Actor } from 'wglt';
 import { Tiles } from './tiles';
 import { Player } from './player';
+import { Sprites } from './sprites';
 
 // Map constants
 export const MAP_WIDTH = 64;
 export const MAP_HEIGHT = 64;
 
-// max_rooms, room_min_size, room_max_size
 const MAX_ROOMS = 30;
 const ROOM_MIN_SIZE = 6;
 const ROOM_MAX_SIZE = 10;
+
+const MAX_MONSTERS_PER_ROOM = 3;
 
 export class MapGenerator {
   readonly game: Game;
@@ -79,6 +81,8 @@ export class MapGenerator {
           }
         }
 
+        this.placeEntities(newRoom);
+
         // Finally, append the new room to the list
         rooms.push(newRoom);
       }
@@ -110,16 +114,35 @@ export class MapGenerator {
   }
 
   private createHTunnel(x1: number, x2: number, y: number) {
-    for (let x = x1; x < x2; x++) {
+    for (let x = Math.min(x1, x2); x < Math.max(x1, x2); x++) {
       this.map.setTile(x, y, 0, Tiles.FLOOR);
       this.map.setBlocked(x, y, false);
     }
   }
 
   private createVTunnel(y1: number, y2: number, x: number) {
-    for (let y = y1; y < y2; y++) {
+    for (let y = Math.min(y1, y2); y < Math.max(y1, y2); y++) {
       this.map.setTile(x, y, 0, Tiles.FLOOR);
       this.map.setBlocked(x, y, false);
+    }
+  }
+
+  private placeEntities(room: Rect) {
+    // Get a random number of monsters
+    const numMonsters = this.rng.nextRange(0, MAX_MONSTERS_PER_ROOM + 1);
+    for (let i = 0; i < numMonsters; i++) {
+      // Choose a random location in the room
+      const x = this.rng.nextRange(room.x1 + 1, room.x2 - 1);
+      const y = this.rng.nextRange(room.y1 + 1, room.y2 - 1);
+      if (!this.game.getEntityAt(x, y)) {
+        let monster;
+        if (this.rng.nextRange(0, 100) < 80) {
+          monster = new Actor(this.game, x, y, 'Orc', Sprites.ORC, true);
+        } else {
+          monster = new Actor(this.game, x, y, 'Troll', Sprites.TROLL, true);
+        }
+        this.game.entities.add(monster);
+      }
     }
   }
 
