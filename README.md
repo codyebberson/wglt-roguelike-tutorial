@@ -69,5 +69,9 @@ Verbatim port of the Python tutorial to Typescript.
 
 Nothing to do!  Field of view is included in the WGLT library.  The only notable difference is that WGLT darkens (50% alpha black overlay) tiles, whereas the Python tutorial uses different colors entirely.
 
+### Part 5 - Placing enemies
+
+Creating enemies using the WGLT Actor class.
+
 ## Credits:
 * Art from [Scroll-o-Sprites](https://www.reddit.com/r/roguelikedev/comments/1dmbxr/art_scrollosprites/)
