@@ -73,5 +73,9 @@ Nothing to do!  Field of view is included in the WGLT library.  The only notable
 
 Creating enemies using the WGLT Actor class.
 
+### Part 6 - Doing and taking damage
+
+This part gets into the the WGLT Actor model.  The built-in Actor class includes methods for `takeDamage`, `onBump`, and `onDeath`.  We just need to override the methods in our Monster class accordingly.  Unlike the tutorial, we do *not* use ECS for the "Fighter" class, instead preferring class-based inheritance.
+
 ## Credits:
 * Art from [Scroll-o-Sprites](https://www.reddit.com/r/roguelikedev/comments/1dmbxr/art_scrollosprites/)

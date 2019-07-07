@@ -1,7 +1,8 @@
-import { Game, TileMap, Rect, RNG, Actor } from 'wglt';
+import { Game, TileMap, Rect, RNG } from 'wglt';
 import { Tiles } from './tiles';
 import { Player } from './player';
 import { Sprites } from './sprites';
+import { Monster } from './monster';
 
 // Map constants
 export const MAP_WIDTH = 64;
@@ -137,9 +138,17 @@ export class MapGenerator {
       if (!this.game.getEntityAt(x, y)) {
         let monster;
         if (this.rng.nextRange(0, 100) < 80) {
-          monster = new Actor(this.game, x, y, 'Orc', Sprites.ORC, true);
+          monster = new Monster(this.game, x, y, 'Orc', Sprites.ORC);
+          monster.hp = 10;
+          monster.maxHp = 10;
+          monster.defense = 0;
+          monster.power = 3;
         } else {
-          monster = new Actor(this.game, x, y, 'Troll', Sprites.TROLL, true);
+          monster = new Monster(this.game, x, y, 'Troll', Sprites.TROLL);
+          monster.hp = 16;
+          monster.maxHp = 16;
+          monster.defense = 1;
+          monster.power = 4;
         }
         this.game.entities.add(monster);
       }
