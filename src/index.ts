@@ -1,4 +1,4 @@
-import { App, Rect, Game, Vec2 } from 'wglt';
+import { App, Rect, Game, Vec2, MessageLog, StandardColors, Panel } from 'wglt';
 import { Player } from './player';
 import { MAP_WIDTH, MAP_HEIGHT, MapGenerator } from './mapgen';
 
@@ -19,6 +19,25 @@ const game = new Game(app, {
   verticalViewDistance: 6,
   focusMargins: new Vec2(0, 40),
 });
+
+// Create a message log.
+// Attach it to the bottom left corner of the screen.
+game.messageLog = new MessageLog(new Rect(1, -50, 100, 50));
+game.gui.add(game.messageLog);
+game.log('Welcome stranger! Prepare to perish!', StandardColors.RED);
+
+// Create the player stats overlay.
+const playerStats = new Panel(new Rect(1, 1, 100, 100));
+playerStats.drawContents = function () {
+  const frameY = 0;
+  app.drawString(player.name, 1, frameY);
+
+  const hpPercent = player.hp / player.maxHp;
+  app.drawImage(0, frameY + 7, 32, 64, 32, 12);
+  app.drawImage(2, frameY + 9, 32, 80, 8, 8, undefined, Math.round(hpPercent * 28));
+  app.drawString(player.hp + '/' + player.maxHp, 3, frameY + 10);
+};
+game.gui.add(playerStats);
 
 // Create the player.
 // See the Player class for more details.
