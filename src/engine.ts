@@ -1,17 +1,29 @@
 import { Terminal } from 'wglt';
+import { Action, BumpAction } from './actions';
 import { Entity } from './entity';
 import { GameMap } from './gamemap';
 
 export class Engine {
-  constructor(public entities: Entity[], public player: Entity, public gameMap: GameMap) {
+  constructor(public player: Entity, public gameMap: GameMap) {
     this.updateFov();
+  }
+
+  handleEnemyTurns(): void {
+    for (const entity of this.gameMap.entities) {
+      console.log(`The ${entity.name} wonders when it will get to take a real turn.`);
+    }
   }
 
   handleEvents(term: Terminal) {
     const moveKey = term.getMovementKey();
-    if (moveKey && this.gameMap.isWalkable(this.player.x + moveKey.x, this.player.y + moveKey.y)) {
-      this.player.x += moveKey.x;
-      this.player.y += moveKey.y;
+    let action: Action | undefined = undefined;
+    if (moveKey) {
+      action = new BumpAction(moveKey.x, moveKey.y);
+    }
+
+    if (action) {
+      action.perform(this, this.player);
+      this.handleEnemyTurns();
       this.updateFov();
     }
   }
@@ -26,12 +38,5 @@ export class Engine {
 
     // Draw the game map
     this.gameMap.render(term);
-
-    // Draw the entities
-    for (const entity of this.entities) {
-      if (this.gameMap.isVisible(entity.x, entity.y)) {
-        term.drawChar(entity.x, entity.y, entity.char, entity.color);
-      }
-    }
   }
 }
