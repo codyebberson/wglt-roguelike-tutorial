@@ -41,3 +41,7 @@ Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-3/
 Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/15
 
 ![image](https://user-images.githubusercontent.com/749094/178153346-88b59f65-be8b-4fbf-8c6b-413485292252.png)
+
+### Part 4 - Field of View
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-4/
