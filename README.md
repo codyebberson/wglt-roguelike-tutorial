@@ -45,3 +45,15 @@ Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/15
 ### Part 4 - Field of View
 
 Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-4/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/16
+
+https://user-images.githubusercontent.com/749094/178154479-516965c9-c4dc-497b-89bd-7c87117c7b5f.mp4
+
+### Part 5 - Placing Enemies and kicking them (harmlessly)
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-5/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/17
+
+![image](https://user-images.githubusercontent.com/749094/178155824-8de6ff7b-93ce-45e9-b3bb-8aacaa514ce1.png)
