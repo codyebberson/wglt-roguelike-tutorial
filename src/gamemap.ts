@@ -1,6 +1,11 @@
 import { Rect } from 'rect';
-import { Console, Terminal } from 'wglt';
+import { Colors, Console, fromRgb, Terminal } from 'wglt';
 import { floor, wall } from './tiles';
+
+const COLOR_DARK_WALL = fromRgb(0, 0, 100);
+const COLOR_LIGHT_WALL = fromRgb(130, 110, 50);
+const COLOR_DARK_GROUND = fromRgb(50, 50, 150);
+const COLOR_LIGHT_GROUND = fromRgb(200, 180, 50);
 
 export class GameMap {
   private console: Console;
@@ -34,21 +39,55 @@ export class GameMap {
     }
   }
 
+  updateFov(x: number, y: number): void {
+    this.console.computeFov(x, y, 8);
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        const visible = this.console.isVisible(x, y);
+        if (visible) {
+          this.console.grid[y][x].explored = true;
+        }
+      }
+    }
+  }
+
+  isVisible(x: number, y: number): boolean {
+    return this.console.isVisible(x, y);
+  }
+
   isWalkable(x: number, y: number): boolean {
     return !this.console.isBlocked(x, y);
   }
 
   render(term: Terminal): void {
-    term.drawConsole(0, 0, this.console, 0, 0, this.width, this.height);
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        const visible = this.isVisible(x, y);
+        const wall = this.console.grid[y][x].blockedSight;
+        let color = Colors.BLACK;
+
+        if (visible) {
+          // It's visible
+          color = wall ? COLOR_LIGHT_WALL : COLOR_LIGHT_GROUND;
+        } else if (this.console.grid[y][x].explored) {
+          // It's remembered
+          color = wall ? COLOR_DARK_WALL : COLOR_DARK_GROUND;
+        }
+
+        term.drawChar(x, y, 0, 0, color);
+      }
+    }
   }
 
   private makeWall(x: number, y: number): void {
     this.console.drawCell(x, y, wall);
     this.console.setBlocked(x, y, true);
+    this.console.setBlockedSight(x, y, true);
   }
 
   private makeFloor(x: number, y: number): void {
     this.console.drawCell(x, y, floor);
     this.console.setBlocked(x, y, false);
+    this.console.setBlockedSight(x, y, false);
   }
 }
