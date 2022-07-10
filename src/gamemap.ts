@@ -1,5 +1,6 @@
 import { Rect } from 'rect';
 import { Colors, Console, fromRgb, Terminal } from 'wglt';
+import { Entity } from './entity';
 import { floor, wall } from './tiles';
 
 const COLOR_DARK_WALL = fromRgb(0, 0, 100);
@@ -9,7 +10,7 @@ const COLOR_LIGHT_GROUND = fromRgb(200, 180, 50);
 
 export class GameMap {
   private console: Console;
-  constructor(public width: number, public height: number) {
+  constructor(public width: number, public height: number, public entities: Entity[]) {
     this.console = new Console(width, height);
 
     for (let y = 0; y < height; y++) {
@@ -55,8 +56,12 @@ export class GameMap {
     return this.console.isVisible(x, y);
   }
 
-  isWalkable(x: number, y: number): boolean {
-    return !this.console.isBlocked(x, y);
+  isWall(x: number, y: number): boolean {
+    return this.console.isBlocked(x, y);
+  }
+
+  getBlockingEntity(x: number, y: number): Entity | undefined {
+    return this.entities.find((e) => e.blocks && e.x === x && e.y === y);
   }
 
   render(term: Terminal): void {
@@ -75,6 +80,12 @@ export class GameMap {
         }
 
         term.drawChar(x, y, 0, 0, color);
+      }
+    }
+
+    for (const entity of this.entities) {
+      if (this.isVisible(entity.x, entity.y)) {
+        term.drawChar(entity.x, entity.y, entity.char, entity.color);
       }
     }
   }
