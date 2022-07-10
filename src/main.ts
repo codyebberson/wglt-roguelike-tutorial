@@ -1,23 +1,22 @@
 import { Colors, Terminal } from 'wglt';
+import { Engine } from './engine';
+import { Entity } from './entity';
+import { GameMap } from './gamemap';
 
-const WIDTH = 80;
-const HEIGHT = 45;
+const SCREEN_WIDTH = 80;
+const SCREEN_HEIGHT = 45;
 
-const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, WIDTH, HEIGHT);
-term.fillRect(0, 0, 80, 45, 0, Colors.YELLOW, Colors.DARK_BLUE);
+const MAP_WIDTH = 80;
+const MAP_HEIGHT = 40;
 
-let x = 10;
-let y = 10;
+const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, SCREEN_WIDTH, SCREEN_HEIGHT);
+const player = new Entity(40, 20, '@', Colors.WHITE);
+const npc = new Entity(35, 20, '@', Colors.YELLOW);
+const entities = [player, npc];
+const gameMap = new GameMap(MAP_WIDTH, MAP_HEIGHT);
+const engine = new Engine(entities, player, gameMap);
 
 term.update = () => {
-  const moveKey = term.getMovementKey();
-  if (moveKey) {
-    x += moveKey.x;
-    y += moveKey.y;
-  }
-
-  term.clear();
-  term.drawString(1, 1, 'Hello world!');
-  term.drawString(1, 3, 'Use arrow keys to move');
-  term.drawString(x, y, '@');
+  engine.handleEvents(term);
+  engine.render(term);
 };
