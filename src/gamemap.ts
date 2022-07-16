@@ -1,5 +1,4 @@
-import { Rect } from 'rect';
-import { Colors, Console, fromRgb, Terminal } from 'wglt';
+import { Colors, Console, fromRgb, Rect, Terminal } from 'wglt';
 import { Entity } from './entity';
 import { floor, wall } from './tiles';
 
