@@ -1,28 +1,30 @@
-import { Terminal } from 'wglt';
+import { serializable, Terminal } from 'wglt';
 import { Action, BumpAction } from './actions';
-import { Entity } from './entity';
+import { Actor } from './actor';
 import { GameMap } from './gamemap';
 
+@serializable
 export class Engine {
-  constructor(public player: Entity, public gameMap: GameMap) {
+  constructor(public player: Actor, public gameMap: GameMap) {
     this.updateFov();
   }
 
   handleEnemyTurns(): void {
-    for (const entity of this.gameMap.entities) {
-      console.log(`The ${entity.name} wonders when it will get to take a real turn.`);
-    }
+    this.gameMap.actors.forEach((a) => a.ai?.perform(this, a));
   }
 
   handleEvents(term: Terminal) {
-    const moveKey = term.getMovementKey();
     let action: Action | undefined = undefined;
-    if (moveKey) {
-      action = new BumpAction(moveKey.x, moveKey.y);
+
+    if (this.player.hp > 0) {
+      const moveKey = term.getMovementKey();
+      if (moveKey) {
+        action = new BumpAction(this.player, moveKey.x, moveKey.y);
+      }
     }
 
     if (action) {
-      action.perform(this, this.player);
+      action.perform(this);
       this.handleEnemyTurns();
       this.updateFov();
     }
