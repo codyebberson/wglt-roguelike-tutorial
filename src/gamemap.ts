@@ -48,14 +48,7 @@ export class GameMap {
 
   updateFov(x: number, y: number): void {
     this.console.computeFov(x, y, 8);
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const visible = this.console.isVisible(x, y);
-        if (visible) {
-          this.console.grid[y][x].explored = true;
-        }
-      }
-    }
+    this.console.updateExplored();
   }
 
   isVisible(x: number, y: number): boolean {

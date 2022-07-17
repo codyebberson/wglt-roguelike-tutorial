@@ -1,7 +1,6 @@
-import { serializable } from 'wglt';
+import { capitalize, serializable } from 'wglt';
 import { Actor } from './actor';
 import { Engine } from './engine';
-import { capitalize } from './utils';
 
 export abstract class Action {
   constructor(public actor: Actor) {}

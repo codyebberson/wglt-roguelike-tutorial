@@ -1,7 +1,6 @@
-import { Color, fromRgb, serializable } from 'wglt';
+import { capitalize, Color, fromRgb, serializable } from 'wglt';
 import { BaseAI } from './ai';
 import { Entity, RenderOrder } from './entity';
-import { capitalize } from './utils';
 
 @serializable
 export class Actor extends Entity {
