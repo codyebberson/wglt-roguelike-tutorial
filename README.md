@@ -57,3 +57,19 @@ Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-5/
 Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/17
 
 ![image](https://user-images.githubusercontent.com/749094/178155824-8de6ff7b-93ce-45e9-b3bb-8aacaa514ce1.png)
+
+### Part 6 - Doing (and taking) some damage
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-6/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/18
+
+https://user-images.githubusercontent.com/749094/179381736-a8e2bff7-e1c3-4ff0-9c4c-5de609f8bffc.mp4
+
+### Part 7 - Creating the Interface
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-7/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/19
+
+https://user-images.githubusercontent.com/749094/179420966-659fb252-da3b-4102-a213-3e9a4d0e1ed7.mp4
