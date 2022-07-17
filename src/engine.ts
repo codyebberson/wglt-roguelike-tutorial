@@ -1,12 +1,21 @@
-import { serializable, Terminal } from 'wglt';
+import { Color, serializable, Terminal } from 'wglt';
 import { Action, BumpAction } from './actions';
 import { Actor } from './actor';
+import { WHITE } from './color';
 import { GameMap } from './gamemap';
+import { MessageLog } from './messagelog';
+import { renderBar, renderNames } from './utils';
 
 @serializable
 export class Engine {
+  readonly messageLog = new MessageLog();
+
   constructor(public player: Actor, public gameMap: GameMap) {
     this.updateFov();
+  }
+
+  log(text: string, fg: Color = WHITE): void {
+    this.messageLog.add(text, fg);
   }
 
   handleEnemyTurns(): void {
@@ -40,5 +49,14 @@ export class Engine {
 
     // Draw the game map
     this.gameMap.render(term);
+
+    // Message log
+    this.messageLog.render(term, 21, 40, 40, 5);
+
+    // Health bar
+    renderBar(term, this.player.hp, this.player.maxHp, 20);
+
+    // Names at mouse location
+    renderNames(term, this.gameMap, term.mouse.x, term.mouse.y);
   }
 }

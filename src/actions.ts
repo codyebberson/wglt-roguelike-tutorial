@@ -1,5 +1,6 @@
 import { capitalize, serializable } from 'wglt';
 import { Actor } from './actor';
+import { ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
 import { Engine } from './engine';
 
 export abstract class Action {
@@ -26,11 +27,13 @@ export class MeleeAction extends ActionWithDirection {
 
     const damage = this.actor.power - target.defense;
     const attackDesc = capitalize(this.actor.name) + ' attacks ' + target.name;
+    const color = this.actor === engine.player ? PLAYER_ATTACK_COLOR : ENEMY_ATTACK_COLOR;
+
     if (damage > 0) {
-      console.log(attackDesc + ' for ' + damage + ' hit points!');
-      target.hp -= damage;
+      engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
+      target.addHp(engine, -damage);
     } else {
-      console.log(attackDesc + ' but does no damage.');
+      console.log(attackDesc + ' but does no damage.', color);
     }
   }
 }
