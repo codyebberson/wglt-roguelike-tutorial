@@ -1,4 +1,5 @@
-import { Colors, Console, fromRgb, Rect, Terminal } from 'wglt';
+import { Cell, Colors, computePath, Console, fromRgb, PointLike, Rect, serializable, Terminal } from 'wglt';
+import { Actor } from './actor';
 import { Entity } from './entity';
 import { floor, wall } from './tiles';
 
@@ -7,8 +8,10 @@ const COLOR_LIGHT_WALL = fromRgb(130, 110, 50);
 const COLOR_DARK_GROUND = fromRgb(50, 50, 150);
 const COLOR_LIGHT_GROUND = fromRgb(200, 180, 50);
 
+@serializable
 export class GameMap {
   private console: Console;
+
   constructor(public width: number, public height: number, public entities: Entity[]) {
     this.console = new Console(width, height);
 
@@ -17,6 +20,10 @@ export class GameMap {
         this.makeWall(x, y);
       }
     }
+  }
+
+  get actors(): Actor[] {
+    return this.entities.filter((e) => e instanceof Actor && e.blocks) as Actor[];
   }
 
   createRoom(room: Rect): void {
@@ -63,6 +70,14 @@ export class GameMap {
     return this.entities.find((e) => e.blocks && e.x === x && e.y === y);
   }
 
+  getActor(x: number, y: number): Actor | undefined {
+    return this.actors.find((e) => e.x === x && e.y === y) as Actor | undefined;
+  }
+
+  computePath(start: PointLike, end: PointLike): Cell[] | undefined {
+    return computePath(this.console, start, end, 1000);
+  }
+
   render(term: Terminal): void {
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -81,6 +96,8 @@ export class GameMap {
         term.drawChar(x, y, 0, 0, color);
       }
     }
+
+    this.entities.sort((a, b) => a.renderOrder - b.renderOrder);
 
     for (const entity of this.entities) {
       if (this.isVisible(entity.x, entity.y)) {
