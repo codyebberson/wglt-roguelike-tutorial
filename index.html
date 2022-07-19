@@ -6,20 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WGLT Roguelike Tutorial</title>
     <style>
-      body {
+      html,
+      body,
+      div {
         margin: 0;
         padding: 0;
         background-color: #000;
-      }
-      canvas {
         width: 100%;
-        image-rendering: pixelated;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
       }
     </style>
     <script type="module" crossorigin src="./assets/index.dc6f3080.js"></script>
   </head>
   <body>
-    <canvas></canvas>
+    <div>
+      <canvas></canvas>
+    </div>
     
   </body>
 </html>
