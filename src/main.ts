@@ -1,4 +1,4 @@
-import { Colors, GUI, Keys, Message, Rect, ScrollableMessageDialog, Terminal } from 'wglt';
+import { Colors, GUI, Key, Message, Rect, ScrollableMessageDialog, Terminal } from 'wglt';
 import { Actor } from './actor';
 import { WELCOME_TEXT_COLOR } from './color';
 import { Engine } from './engine';
@@ -36,7 +36,7 @@ engine.log('Hello and welcome, adventurer, to yet another dungeon!', WELCOME_TEX
 
 term.update = () => {
   if (!gui.handleInput()) {
-    if (term.isKeyPressed(Keys.VK_V)) {
+    if (term.isKeyPressed(Key.VK_V)) {
       gui.add(
         new ScrollableMessageDialog(
           new Rect(2, 2, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 4),
