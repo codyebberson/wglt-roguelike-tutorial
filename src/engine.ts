@@ -1,7 +1,7 @@
-import { Color, serializable, Terminal } from 'wglt';
-import { Action, BumpAction } from './actions';
+import { Color, Key, serializable, Terminal } from 'wglt';
+import { Action, BumpAction, PickupAction } from './actions';
 import { Actor } from './actor';
-import { WHITE } from './color';
+import { ERROR_COLOR, WHITE } from './color';
 import { GameMap } from './gamemap';
 import { MessageLog } from './messagelog';
 import { renderBar, renderNames } from './utils';
@@ -19,7 +19,13 @@ export class Engine {
   }
 
   handleEnemyTurns(): void {
-    this.gameMap.actors.forEach((a) => a.ai?.perform(this, a));
+    this.gameMap.actors.forEach((a) => {
+      try {
+        a.ai?.perform(this, a);
+      } catch (err) {
+        console.error('Unhandled AI error:', err);
+      }
+    });
   }
 
   handleEvents(term: Terminal) {
@@ -29,14 +35,28 @@ export class Engine {
       const moveKey = term.getMovementKey();
       if (moveKey) {
         action = new BumpAction(this.player, moveKey.x, moveKey.y);
+      } else if (term.isKeyPressed(Key.VK_G)) {
+        action = new PickupAction(this.player);
       }
     }
 
-    if (action) {
-      action.perform(this);
-      this.handleEnemyTurns();
-      this.updateFov();
+    this.handleAction(action);
+  }
+
+  handleAction(action: Action | undefined): void {
+    if (!action) {
+      return;
     }
+
+    try {
+      action.perform(this);
+    } catch (err) {
+      this.log((err as Error).message, ERROR_COLOR);
+      return;
+    }
+
+    this.handleEnemyTurns();
+    this.updateFov();
   }
 
   updateFov(): void {

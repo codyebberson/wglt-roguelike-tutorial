@@ -1,6 +1,7 @@
 import { fromRgb } from 'wglt';
 import { Actor } from './actor';
 import { HostileEnemy } from './ai';
+import { HealingItem } from './item';
 
 export const orc = new Actor(
   'o', // character
@@ -24,4 +25,11 @@ export const troll = new Actor(
   1, // defense
   4, // power
   new HostileEnemy()
+);
+
+export const healingItem = new HealingItem(
+  '!', // character
+  fromRgb(127, 0, 255), // color
+  'Health Potion', // name
+  4 // amount
 );

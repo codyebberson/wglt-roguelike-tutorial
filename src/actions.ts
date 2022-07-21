@@ -2,6 +2,8 @@ import { capitalize, serializable } from 'wglt';
 import { Actor } from './actor';
 import { ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
 import { Engine } from './engine';
+import { Item } from './item';
+import { removeFromArray } from './utils';
 
 export abstract class Action {
   constructor(public actor: Actor) {}
@@ -46,11 +48,11 @@ export class MovementAction extends ActionWithDirection {
 
     if (engine.gameMap.isWall(destX, destY)) {
       // Destination is out of bounds or blocked by a tile
-      return;
+      throw new Error('That way is blocked.');
     }
     if (engine.gameMap.getBlockingEntity(destX, destY)) {
       // Destination is blocked by an actor
-      return;
+      throw new Error('That way is blocked.');
     }
 
     this.actor.move(this.dx, this.dy);
@@ -73,5 +75,30 @@ export class BumpAction extends ActionWithDirection {
     } else {
       return new MovementAction(this.actor, this.dx, this.dy).perform(engine);
     }
+  }
+}
+
+@serializable
+export class PickupAction extends Action {
+  perform(engine: Engine): void {
+    const item = engine.gameMap.getItem(this.actor.x, this.actor.y);
+    if (!item) {
+      throw new Error('There is nothing here to pick up.');
+    }
+
+    this.actor.inventory.push(item);
+    removeFromArray(engine.gameMap.entities, item);
+    engine.log(`You picked up the ${item.name}!`);
+  }
+}
+
+@serializable
+export class ItemAction extends Action {
+  constructor(actor: Actor, readonly item: Item) {
+    super(actor);
+  }
+
+  perform(engine: Engine): void {
+    this.item.activate(engine, this);
   }
 }

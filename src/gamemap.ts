@@ -1,6 +1,7 @@
 import { Cell, Colors, computePath, Console, fromRgb, PointLike, Rect, serializable, Terminal } from 'wglt';
 import { Actor } from './actor';
 import { Entity } from './entity';
+import { Item } from './item';
 import { floor, wall } from './tiles';
 
 const COLOR_DARK_WALL = fromRgb(0, 0, 100);
@@ -24,6 +25,10 @@ export class GameMap {
 
   get actors(): Actor[] {
     return this.entities.filter((e) => e instanceof Actor && e.blocks) as Actor[];
+  }
+
+  get items(): Item[] {
+    return this.entities.filter((e) => e instanceof Item) as Item[];
   }
 
   createRoom(room: Rect): void {
@@ -65,6 +70,10 @@ export class GameMap {
 
   getActor(x: number, y: number): Actor | undefined {
     return this.actors.find((e) => e.x === x && e.y === y) as Actor | undefined;
+  }
+
+  getItem(x: number, y: number): Item | undefined {
+    return this.items.find((e) => e.x === x && e.y === y) as Item | undefined;
   }
 
   computePath(start: PointLike, end: PointLike): Cell[] | undefined {

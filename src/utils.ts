@@ -22,3 +22,10 @@ export function renderNames(console: Console, gameMap: GameMap, x: number, y: nu
     WHITE
   );
 }
+
+export function removeFromArray<T>(array: T[], element: T): void {
+  const index = array.indexOf(element);
+  if (index >= 0) {
+    array.splice(index, 1);
+  }
+}

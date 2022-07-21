@@ -3,9 +3,12 @@ import { BaseAI } from './ai';
 import { ENEMY_DIE_COLOR, PLAYER_DIE_COLOR } from './color';
 import { Engine } from './engine';
 import { Entity, RenderOrder } from './entity';
+import { Item } from './item';
 
 @serializable
 export class Actor extends Entity {
+  readonly inventory: Item[] = [];
+
   constructor(
     char: string,
     color: Color,
@@ -23,6 +26,12 @@ export class Actor extends Entity {
 
   get hp(): number {
     return this.hp_;
+  }
+
+  heal(_engine: Engine, amount: number): number {
+    const actualHealAmount = Math.min(amount, this.maxHp - this.hp);
+    this.hp_ += actualHealAmount;
+    return actualHealAmount;
   }
 
   takeDamage(engine: Engine, amount: number): void {

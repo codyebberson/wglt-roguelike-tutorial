@@ -1,5 +1,5 @@
 import { Rect, RNG } from 'wglt';
-import { orc, troll } from './entities';
+import { healingItem, orc, troll } from './entities';
 import { Entity } from './entity';
 import { GameMap } from './gamemap';
 
@@ -11,6 +11,7 @@ import { GameMap } from './gamemap';
  * @param mapWidth The width of the GameMap to create.
  * @param mapHeight The height of the GameMap to create.
  * @param maxMonstersPerRoom The maximum number of monsters per room.
+ * @param maxItemsPerRoom The maximum number of items per room.
  * @param player The player Entity. We need this to know where to place the player.
  * @returns A new dungeon.
  */
@@ -21,6 +22,7 @@ export function generateDungeon(
   mapWidth: number,
   mapHeight: number,
   maxMonstersPerRoom: number,
+  maxItemsPerRoom: number,
   player: Entity
 ): GameMap {
   const dungeon = new GameMap(mapWidth, mapHeight, [player]);
@@ -69,7 +71,7 @@ export function generateDungeon(
       }
     }
 
-    placeEntities(rng, newRoom, dungeon, maxMonstersPerRoom);
+    placeEntities(rng, newRoom, dungeon, maxMonstersPerRoom, maxItemsPerRoom);
 
     // Finally, append the new room to the list
     rooms.push(newRoom);
@@ -78,8 +80,9 @@ export function generateDungeon(
   return dungeon;
 }
 
-function placeEntities(rng: RNG, room: Rect, dungeon: GameMap, maxMonsters: number): void {
-  const numMonsters = rng.nextRange(0, maxMonsters);
+function placeEntities(rng: RNG, room: Rect, dungeon: GameMap, maxMonsters: number, maxItems: number): void {
+  const numMonsters = rng.nextRange(0, maxMonsters + 1);
+  const numItems = rng.nextRange(0, maxItems + 1);
 
   for (let i = 0; i < numMonsters; i++) {
     const x = rng.nextRange(room.x + 1, room.x2 - 1);
@@ -91,6 +94,15 @@ function placeEntities(rng: RNG, room: Rect, dungeon: GameMap, maxMonsters: numb
       } else {
         troll.spawn(dungeon, x, y);
       }
+    }
+  }
+
+  for (let i = 0; i < numItems; i++) {
+    const x = rng.nextRange(room.x + 1, room.x2 - 1);
+    const y = rng.nextRange(room.y + 1, room.y2 - 1);
+
+    if (!dungeon.getBlockingEntity(x, y)) {
+      healingItem.spawn(dungeon, x, y);
     }
   }
 }
