@@ -31,7 +31,7 @@ export class MeleeAction extends ActionWithDirection {
 
     if (damage > 0) {
       engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
-      target.addHp(engine, -damage);
+      target.takeDamage(engine, damage);
     } else {
       console.log(attackDesc + ' but does no damage.', color);
     }

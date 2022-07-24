@@ -2,9 +2,7 @@ import { fromRgb } from 'wglt';
 import { Actor } from './actor';
 import { HostileEnemy } from './ai';
 
-export const orcType = new Actor(
-  0, // x
-  0, // y
+export const orc = new Actor(
   'o', // character
   fromRgb(63, 127, 63), // color
   'orc', // name
@@ -16,9 +14,7 @@ export const orcType = new Actor(
   new HostileEnemy()
 );
 
-export const trollType = new Actor(
-  0, // x
-  0, // y
+export const troll = new Actor(
   'T', // character
   fromRgb(0, 127, 0), // color
   'troll', // name

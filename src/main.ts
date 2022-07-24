@@ -19,7 +19,7 @@ const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement,
 
 const gui = new GUI(term);
 
-const player = new Actor(40, 20, '@', Colors.WHITE, 'Player', true, 30, 30, 2, 5);
+const player = new Actor('@', Colors.WHITE, 'Player', true, 30, 30, 2, 5);
 
 const gameMap = generateDungeon(
   MAX_ROOMS,

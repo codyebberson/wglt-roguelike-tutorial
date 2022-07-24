@@ -1,4 +1,4 @@
-import { Color, deserialize, serializable, serialize } from 'wglt';
+import { Color, deserialize, serialize } from 'wglt';
 import { GameMap } from './gamemap';
 
 export const RenderOrder = {
@@ -7,8 +7,7 @@ export const RenderOrder = {
   ACTOR: 2,
 };
 
-@serializable
-export class Entity {
+export abstract class Entity {
   constructor(
     public x: number,
     public y: number,

@@ -1,5 +1,5 @@
 import { Rect, RNG } from 'wglt';
-import { orcType, trollType } from './entities';
+import { orc, troll } from './entities';
 import { Entity } from './entity';
 import { GameMap } from './gamemap';
 
@@ -10,7 +10,7 @@ import { GameMap } from './gamemap';
  * @param roomMaxSize The maximum size of one room.
  * @param mapWidth The width of the GameMap to create.
  * @param mapHeight The height of the GameMap to create.
- * @param maxMonstersPerRoom
+ * @param maxMonstersPerRoom The maximum number of monsters per room.
  * @param player The player Entity. We need this to know where to place the player.
  * @returns A new dungeon.
  */
@@ -87,9 +87,9 @@ function placeEntities(rng: RNG, room: Rect, dungeon: GameMap, maxMonsters: numb
 
     if (!dungeon.getBlockingEntity(x, y)) {
       if (rng.nextFloat() < 0.8) {
-        orcType.spawn(dungeon, x, y);
+        orc.spawn(dungeon, x, y);
       } else {
-        trollType.spawn(dungeon, x, y);
+        troll.spawn(dungeon, x, y);
       }
     }
   }
