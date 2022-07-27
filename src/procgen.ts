@@ -1,5 +1,5 @@
 import { Rect, RNG } from 'wglt';
-import { healingItem, orc, troll } from './entities';
+import { confusionScroll, fireballScroll, healingItem, lightningScroll, orc, troll } from './entities';
 import { Entity } from './entity';
 import { GameMap } from './gamemap';
 
@@ -102,7 +102,16 @@ function placeEntities(rng: RNG, room: Rect, dungeon: GameMap, maxMonsters: numb
     const y = rng.nextRange(room.y + 1, room.y2 - 1);
 
     if (!dungeon.getBlockingEntity(x, y)) {
-      healingItem.spawn(dungeon, x, y);
+      const itemChance = rng.nextFloat();
+      if (itemChance < 0.7) {
+        healingItem.spawn(dungeon, x, y);
+      } else if (itemChance < 0.8) {
+        fireballScroll.spawn(dungeon, x, y);
+      } else if (itemChance < 0.9) {
+        confusionScroll.spawn(dungeon, x, y);
+      } else {
+        lightningScroll.spawn(dungeon, x, y);
+      }
     }
   }
 }

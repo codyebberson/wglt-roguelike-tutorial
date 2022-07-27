@@ -58,7 +58,7 @@ function openUseMenu() {
     new SelectDialog(
       'Select an item to use',
       player.inventory.map((i) => i.name),
-      (selected) => engine.handleAction(player.inventory[selected].getAction(player))
+      (selected) => engine.handleAction(player.inventory[selected].getAction(engine, player))
     )
   );
 }

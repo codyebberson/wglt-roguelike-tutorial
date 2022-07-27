@@ -1,4 +1,4 @@
-import { capitalize, serializable } from 'wglt';
+import { capitalize, PointLike, serializable } from 'wglt';
 import { Actor } from './actor';
 import { ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
 import { Engine } from './engine';
@@ -6,6 +6,8 @@ import { Item } from './item';
 import { removeFromArray } from './utils';
 
 export abstract class Action {
+  target?: PointLike;
+
   constructor(public actor: Actor) {}
 
   abstract perform(engine: Engine): void;
