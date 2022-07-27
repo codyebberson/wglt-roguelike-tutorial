@@ -2,7 +2,7 @@
 
 ![RoguelikeDev Does The Complete Roguelike Tutorial](logo.png)
 
-Implementation of [/r/roguelikedev](https://reddit.com/r/roguelikedev/)'s annual [Roguelike Tutorial](https://www.reddit.com/r/roguelikedev/comments/br1sv3/roguelikedev_does_the_complete_roguelike_tutorial/) using [TypeScript](https://www.typescriptlang.org/) and [WGLT](https://wglt.js.org/).
+Implementation of [/r/roguelikedev](https://reddit.com/r/roguelikedev/)'s annual [Roguelike Tutorial](https://www.reddit.com/r/roguelikedev/comments/vhfsda/roguelikedev_does_the_complete_roguelike_tutorial/) using [TypeScript](https://www.typescriptlang.org/) and [WGLT](https://wglt.js.org/).
 
 ## Try it!
 
@@ -73,3 +73,19 @@ Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-7/
 Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/19
 
 https://user-images.githubusercontent.com/749094/179420966-659fb252-da3b-4102-a213-3e9a4d0e1ed7.mp4
+
+### Part 8 - Items and Inventory
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-8/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/20
+
+![image](https://user-images.githubusercontent.com/749094/180628062-98301d90-bd6b-4c42-a133-cc6236b46a8c.png)
+
+### Part 9 - Ranged Scrolls and Targeting
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-9/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/21
+
+![image](https://user-images.githubusercontent.com/749094/181167912-7c7cb5a3-624a-42bb-ad15-76977977ec0b.png)
