@@ -64,6 +64,9 @@ export class Engine {
     // Draw the game map
     this.gameMap.render(term);
 
+    // Draw overlay for input handler
+    this.eventHandler.onRender(term);
+
     // Message log
     this.messageLog.render(term, 21, 40, 40, 5);
 

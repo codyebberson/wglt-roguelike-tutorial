@@ -26,6 +26,10 @@ export abstract class Entity {
     return clone;
   }
 
+  distance(x: number, y: number): number {
+    return Math.hypot(this.x - x, this.y - y);
+  }
+
   move(dx: number, dy: number): void {
     this.x += dx;
     this.y += dy;

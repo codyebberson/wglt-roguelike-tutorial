@@ -1,5 +1,5 @@
 import { PointLike, serializable } from 'wglt';
-import { MeleeAction, MovementAction } from './actions';
+import { BumpAction, MeleeAction, MovementAction } from './actions';
 import { Actor } from './actor';
 import { Engine } from './engine';
 
@@ -38,5 +38,36 @@ export class HostileEnemy extends BaseAI {
 
     // Move towards the player.
     this.walkToward(engine, actor, target);
+  }
+}
+
+/**
+ * A confused enemy will stumble around aimlessly for a given number of turns, then revert back to its previous AI.
+ * If an actor occupies a tile it is randomly moving into, it will attack.
+ */
+@serializable
+export class ConfusedEnemy extends BaseAI {
+  constructor(readonly previousAi: BaseAI, public turnsRemaining: number) {
+    super();
+  }
+
+  perform(engine: Engine, actor: Actor): void {
+    if (this.turnsRemaining <= 0) {
+      // Revert the AI back to the original state if the effect has run its course.
+      engine.log(`The ${actor.name} is no longer confused.`);
+      actor.ai = this.previousAi;
+    } else {
+      // Pick a random direction
+      const dx = Math.floor(Math.random() * 3) - 1;
+      const dy = Math.floor(Math.random() * 3) - 1;
+
+      this.turnsRemaining--;
+
+      // The actor will either try to move or attack in the chosen random direction.
+      // Its possible the actor will just bump into the wall, wasting a turn.
+      try {
+        new BumpAction(actor, dx, dy).perform(engine);
+      } catch (err) {}
+    }
   }
 }
