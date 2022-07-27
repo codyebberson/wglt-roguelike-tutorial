@@ -27,10 +27,14 @@ export class HealingItem extends Item {
   activate(engine: Engine, action: Action): void {
     const amountRecovered = action.actor.heal(engine, this.amount);
     if (amountRecovered > 0) {
-      removeFromArray(action.actor.inventory, this);
+      consume(action.actor, this);
       engine.log(`You consume the ${this.name}, and recover ${amountRecovered} HP!`, HEALTH_RECOVERED_COLOR);
     } else {
       throw new Error('Your health is already full.');
     }
   }
+}
+
+function consume(actor: Actor, item: Item): void {
+  removeFromArray(actor.inventory, item);
 }

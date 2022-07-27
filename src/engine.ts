@@ -1,17 +1,20 @@
-import { Color, Key, serializable, Terminal } from 'wglt';
-import { Action, BumpAction, PickupAction } from './actions';
+import { Color, serializable, Terminal } from 'wglt';
+import { Action } from './actions';
 import { Actor } from './actor';
 import { ERROR_COLOR, WHITE } from './color';
 import { GameMap } from './gamemap';
+import { EventHandler, MainGameEventHandler } from './handlers';
 import { MessageLog } from './messagelog';
 import { renderBar, renderNames } from './utils';
 
 @serializable
 export class Engine {
   readonly messageLog = new MessageLog();
+  eventHandler: EventHandler;
 
   constructor(public player: Actor, public gameMap: GameMap) {
     this.updateFov();
+    this.eventHandler = new MainGameEventHandler(this);
   }
 
   log(text: string, fg: Color = WHITE): void {
@@ -29,18 +32,9 @@ export class Engine {
   }
 
   handleEvents(term: Terminal) {
-    let action: Action | undefined = undefined;
-
     if (this.player.hp > 0) {
-      const moveKey = term.getMovementKey();
-      if (moveKey) {
-        action = new BumpAction(this.player, moveKey.x, moveKey.y);
-      } else if (term.isKeyPressed(Key.VK_G)) {
-        action = new PickupAction(this.player);
-      }
+      this.eventHandler.handleEvents(term);
     }
-
-    this.handleAction(action);
   }
 
   handleAction(action: Action | undefined): void {

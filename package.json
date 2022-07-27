@@ -8,8 +8,8 @@
   },
   "devDependencies": {
     "typescript": "4.7.4",
-    "vite": "3.0.0",
-    "wglt": "0.4.0"
+    "vite": "3.0.3",
+    "wglt": "0.4.2"
   },
   "prettier": {
     "printWidth": 120,
