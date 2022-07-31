@@ -1,4 +1,4 @@
-import { Colors, Key, Terminal } from 'wglt';
+import { Colors, Key, serializable, Terminal } from 'wglt';
 import { Action, BumpAction, PickupAction } from './actions';
 import { RED } from './color';
 import { Engine } from './engine';
@@ -14,6 +14,7 @@ export abstract class EventHandler {
   }
 }
 
+@serializable
 export class MainGameEventHandler extends EventHandler {
   handleEvents(term: Terminal): void {
     let action: Action | undefined = undefined;
@@ -62,12 +63,14 @@ export abstract class TargetingHandler extends EventHandler {
   abstract onSelect(x: number, y: number): void;
 }
 
+@serializable
 export class LookHandler extends TargetingHandler {
   onSelect(): void {
     this.engine.eventHandler = new MainGameEventHandler(this.engine);
   }
 }
 
+@serializable
 export class SingleRangedAttackHandler extends TargetingHandler {
   constructor(readonly engine: Engine, readonly action: Action) {
     super(engine);
@@ -80,6 +83,7 @@ export class SingleRangedAttackHandler extends TargetingHandler {
   }
 }
 
+@serializable
 export class AreaRangedAttackHandler extends TargetingHandler {
   constructor(readonly engine: Engine, readonly radius: number, readonly action: Action) {
     super(engine);

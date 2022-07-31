@@ -1,59 +1,75 @@
-import { Colors, GUI, Key, Message, Rect, ScrollableMessageDialog, SelectDialog, Terminal } from 'wglt';
-import { Actor } from './actor';
-import { WELCOME_TEXT_COLOR } from './color';
+import { Colors, GUI, Key, Message, MessageDialog, Rect, ScrollableMessageDialog, SelectDialog, Terminal } from 'wglt';
 import { Engine } from './engine';
-import { generateDungeon } from './procgen';
+import { loadGame, newGame, renderMainMenu, saveGame } from './menu';
 
 const SCREEN_WIDTH = 80;
 const SCREEN_HEIGHT = 45;
 
-const MAP_WIDTH = SCREEN_WIDTH;
-const MAP_HEIGHT = SCREEN_HEIGHT - 7;
-
-const ROOM_MAX_SIZE = 10;
-const ROOM_MIN_SIZE = 6;
-const MAX_ROOMS = 30;
-const MAX_MONSTERS_PER_ROOM = 2;
-const MAX_ITEMS_PER_ROOM = 2;
-
 const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, SCREEN_WIDTH, SCREEN_HEIGHT);
-
 const gui = new GUI(term);
+let engine: Engine | undefined = undefined;
 
-const player = new Actor('@', Colors.WHITE, 'Player', true, 30, 30, 2, 5);
-
-const gameMap = generateDungeon(
-  MAX_ROOMS,
-  ROOM_MIN_SIZE,
-  ROOM_MAX_SIZE,
-  MAP_WIDTH,
-  MAP_HEIGHT,
-  MAX_MONSTERS_PER_ROOM,
-  MAX_ITEMS_PER_ROOM,
-  player
-);
-
-const engine = new Engine(player, gameMap);
-engine.log('Hello and welcome, adventurer, to yet another dungeon!', WELCOME_TEXT_COLOR);
+openMainMenu();
 
 term.update = () => {
   if (!gui.handleInput()) {
-    if (term.isKeyPressed(Key.VK_I)) {
-      openUseMenu();
-    } else if (term.isKeyPressed(Key.VK_D)) {
-      openDropMenu();
-    } else if (term.isKeyPressed(Key.VK_V)) {
-      openMessageLog();
-    } else {
-      engine.handleEvents(term);
+    if (engine) {
+      if (term.isKeyPressed(Key.VK_I)) {
+        openUseMenu(engine);
+      } else if (term.isKeyPressed(Key.VK_D)) {
+        openDropMenu(engine);
+      } else if (term.isKeyPressed(Key.VK_V)) {
+        openMessageLog(engine);
+      } else {
+        engine.handleEvents(term);
+      }
+    }
+    if (term.isKeyPressed(Key.VK_ESCAPE)) {
+      openMainMenu();
     }
   }
 
-  engine.render(term);
+  if (engine) {
+    engine.render(term);
+  } else {
+    renderMainMenu(term);
+  }
+
   gui.draw();
 };
 
-function openUseMenu() {
+function openMainMenu() {
+  gui.add(
+    new SelectDialog('Main Menu', ['New Game', 'Continue', 'Save Game', 'Load Game'], (selected) => {
+      switch (selected) {
+        case 0:
+          setEngine(newGame());
+          break;
+        case 1:
+          // Just close the menu
+          break;
+        case 2:
+          saveGame(engine!);
+          break;
+        case 3:
+          try {
+            setEngine(loadGame());
+          } catch (err) {
+            gui.add(new MessageDialog('Error', 'Could not load saved game'));
+          }
+          break;
+      }
+    })
+  );
+}
+
+function setEngine(newEngine: Engine): void {
+  engine = newEngine;
+  term.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, Colors.WHITE, Colors.BLACK);
+}
+
+function openUseMenu(engine: Engine) {
+  const player = engine.player;
   gui.add(
     new SelectDialog(
       'Select an item to use',
@@ -63,7 +79,8 @@ function openUseMenu() {
   );
 }
 
-function openDropMenu() {
+function openDropMenu(engine: Engine) {
+  const player = engine.player;
   gui.add(
     new SelectDialog(
       'Select an item to drop',
@@ -73,7 +90,7 @@ function openDropMenu() {
   );
 }
 
-function openMessageLog() {
+function openMessageLog(engine: Engine) {
   gui.add(
     new ScrollableMessageDialog(
       new Rect(2, 2, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 4),
