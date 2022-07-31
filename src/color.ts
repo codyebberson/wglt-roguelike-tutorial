@@ -22,3 +22,6 @@ export const HEALTH_RECOVERED_COLOR = fromRgb(0x0, 0xff, 0x0);
 export const BAR_TEXT_COLOR = WHITE;
 export const BAR_FILLED_COLOR = fromRgb(0x0, 0x60, 0x0);
 export const BAR_EMPTY_COLOR = fromRgb(0x40, 0x10, 0x10);
+
+export const MENU_TITLE_COLOR = fromRgb(255, 255, 63);
+export const MENU_TEXT = WHITE;
