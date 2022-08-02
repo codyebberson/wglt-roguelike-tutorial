@@ -1,10 +1,12 @@
 import { Rect, RNG } from 'wglt';
+import { Engine } from './engine';
 import { confusionScroll, fireballScroll, healingItem, lightningScroll, orc, troll } from './entities';
-import { Entity } from './entity';
 import { GameMap } from './gamemap';
 
 /**
  * Procedurally generates a dungeon.
+ * @param engine The game engine.
+ * @param level The dungeon level.
  * @param maxRooms The maximum number of rooms allowed in the dungeon. We’ll use this to control our iteration.
  * @param roomMinSize The minimum size of one room.
  * @param roomMaxSize The maximum size of one room.
@@ -12,22 +14,26 @@ import { GameMap } from './gamemap';
  * @param mapHeight The height of the GameMap to create.
  * @param maxMonstersPerRoom The maximum number of monsters per room.
  * @param maxItemsPerRoom The maximum number of items per room.
- * @param player The player Entity. We need this to know where to place the player.
  * @returns A new dungeon.
  */
 export function generateDungeon(
+  engine: Engine,
+  level: number,
   maxRooms: number,
   roomMinSize: number,
   roomMaxSize: number,
   mapWidth: number,
   mapHeight: number,
   maxMonstersPerRoom: number,
-  maxItemsPerRoom: number,
-  player: Entity
+  maxItemsPerRoom: number
 ): GameMap {
+  const { rng, player } = engine;
+
   const dungeon = new GameMap(mapWidth, mapHeight, [player]);
-  const rng = new RNG();
+  dungeon.level = level;
+
   const rooms: Rect[] = [];
+  let center = undefined;
 
   for (let r = 0; r < maxRooms; r++) {
     const w = rng.nextRange(roomMinSize, roomMaxSize);
@@ -49,7 +55,7 @@ export function generateDungeon(
     dungeon.createRoom(newRoom);
 
     // Center coordinates of new room, will be useful later
-    const center = newRoom.getCenter();
+    center = newRoom.getCenter();
 
     if (rooms.length === 0) {
       // This is the first room, where the player starts at
@@ -72,6 +78,8 @@ export function generateDungeon(
     }
 
     placeEntities(rng, newRoom, dungeon, maxMonstersPerRoom, maxItemsPerRoom);
+
+    dungeon.makeStairs(center.x, center.y);
 
     // Finally, append the new room to the list
     rooms.push(newRoom);

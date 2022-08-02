@@ -12,6 +12,7 @@ export const orc = new Actor(
   10, // hp
   0, // defense
   3, // power
+  35, // xp
   new HostileEnemy()
 );
 
@@ -24,6 +25,7 @@ export const troll = new Actor(
   16, // hp
   1, // defense
   4, // power
+  100, // xp
   new HostileEnemy()
 );
 

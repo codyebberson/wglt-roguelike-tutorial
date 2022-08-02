@@ -1,23 +1,24 @@
-import { Cell, Colors, computePath, Console, fromRgb, PointLike, Rect, serializable, Terminal } from 'wglt';
+import { Cell, Colors, computePath, Console, Point, PointLike, Rect, serializable, Terminal } from 'wglt';
 import { Actor } from './actor';
 import { Entity } from './entity';
 import { Item } from './item';
-import { floor, wall } from './tiles';
-
-const COLOR_DARK_WALL = fromRgb(0, 0, 100);
-const COLOR_LIGHT_WALL = fromRgb(130, 110, 50);
-const COLOR_DARK_GROUND = fromRgb(50, 50, 150);
-const COLOR_LIGHT_GROUND = fromRgb(200, 180, 50);
+import { floor, stairs, Tile, wall } from './tiles';
 
 @serializable
 export class GameMap {
+  private tileMap: Tile[][];
   private console: Console;
+  level = 0;
+  stairsLocation = new Point(0, 0);
 
   constructor(public width: number, public height: number, public entities: Entity[]) {
+    this.tileMap = [];
     this.console = new Console(width, height);
 
     for (let y = 0; y < height; y++) {
+      this.tileMap.push([]);
       for (let x = 0; x < width; x++) {
+        this.tileMap[y].push(wall);
         this.makeWall(x, y);
       }
     }
@@ -49,6 +50,12 @@ export class GameMap {
     for (let y = Math.min(y1, y2); y <= Math.max(y1, y2); y++) {
       this.makeFloor(x, y);
     }
+  }
+
+  makeStairs(x: number, y: number): void {
+    this.makeFloor(x, y);
+    this.stairsLocation = new Point(x, y);
+    this.tileMap[y][x] = stairs;
   }
 
   updateFov(x: number, y: number): void {
@@ -83,19 +90,14 @@ export class GameMap {
   render(term: Terminal): void {
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        const visible = this.isVisible(x, y);
-        const wall = this.console.grid[y][x].blockedSight;
-        let color = Colors.BLACK;
-
-        if (visible) {
-          // It's visible
-          color = wall ? COLOR_LIGHT_WALL : COLOR_LIGHT_GROUND;
+        const tile = this.tileMap[y][x];
+        if (this.isVisible(x, y)) {
+          term.drawCell(x, y, tile.light);
         } else if (this.console.grid[y][x].explored) {
-          // It's remembered
-          color = wall ? COLOR_DARK_WALL : COLOR_DARK_GROUND;
+          term.drawCell(x, y, tile.dark);
+        } else {
+          term.drawChar(x, y, 0, Colors.BLACK, Colors.BLACK);
         }
-
-        term.drawChar(x, y, 0, 0, color);
       }
     }
 
@@ -109,13 +111,13 @@ export class GameMap {
   }
 
   private makeWall(x: number, y: number): void {
-    this.console.drawCell(x, y, wall);
+    this.tileMap[y][x] = wall;
     this.console.setBlocked(x, y, true);
     this.console.setBlockedSight(x, y, true);
   }
 
   private makeFloor(x: number, y: number): void {
-    this.console.drawCell(x, y, floor);
+    this.tileMap[y][x] = floor;
     this.console.setBlocked(x, y, false);
     this.console.setBlockedSight(x, y, false);
   }

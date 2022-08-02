@@ -1,5 +1,5 @@
 import { Colors, Key, serializable, Terminal } from 'wglt';
-import { Action, BumpAction, PickupAction } from './actions';
+import { Action, BumpAction, PickupAction, TakeStairsAction } from './actions';
 import { RED } from './color';
 import { Engine } from './engine';
 
@@ -17,10 +17,12 @@ export abstract class EventHandler {
 @serializable
 export class MainGameEventHandler extends EventHandler {
   handleEvents(term: Terminal): void {
+    const moveKey = term.getMovementKey();
     let action: Action | undefined = undefined;
 
-    const moveKey = term.getMovementKey();
-    if (moveKey) {
+    if (term.isKeyDown(Key.VK_SHIFT_LEFT) && term.isKeyPressed(Key.VK_PERIOD)) {
+      action = new TakeStairsAction(this.engine.player);
+    } else if (moveKey) {
       action = new BumpAction(this.engine.player, moveKey.x, moveKey.y);
     } else if (term.isKeyPressed(Key.VK_G)) {
       action = new PickupAction(this.engine.player);
