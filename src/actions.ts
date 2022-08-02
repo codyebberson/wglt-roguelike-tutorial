@@ -1,6 +1,6 @@
 import { capitalize, PointLike, serializable } from 'wglt';
 import { Actor } from './actor';
-import { ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
+import { DESCEND_COLOR, ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
 import { Engine } from './engine';
 import { Item } from './item';
 import { removeFromArray } from './utils';
@@ -102,5 +102,18 @@ export class ItemAction extends Action {
 
   perform(engine: Engine): void {
     this.item.activate(engine, this);
+  }
+}
+
+@serializable
+export class TakeStairsAction extends Action {
+  perform(engine: Engine): void {
+    const stairs = engine.gameMap.stairsLocation;
+    if (!stairs || stairs.x !== this.actor.x || stairs.y !== this.actor.y) {
+      throw new Error('There are no stairs here.');
+    }
+
+    engine.generateFloor();
+    engine.log('You descend the staircase.', DESCEND_COLOR);
   }
 }

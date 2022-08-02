@@ -20,6 +20,8 @@ term.update = () => {
         openDropMenu(engine);
       } else if (term.isKeyPressed(Key.VK_V)) {
         openMessageLog(engine);
+      } else if (term.isKeyPressed(Key.VK_C)) {
+        openCharacterScreen(engine);
       } else {
         engine.handleEvents(term);
       }
@@ -96,6 +98,50 @@ function openMessageLog(engine: Engine) {
       new Rect(2, 2, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 4),
       'Message Log',
       new Message(undefined, undefined, undefined, engine.messageLog.messages)
+    )
+  );
+}
+
+export function openLevelUpMenu(engine: Engine) {
+  const player = engine.player;
+  gui.add(
+    new SelectDialog(
+      'Level up! Select an attribute to increase.',
+      [
+        `Constitution (+20 HP, from ${player.maxHp})`,
+        `Strength (+1 attack, from ${player.power})`,
+        `Agility (+1 defense, from ${player.defense})`,
+      ],
+      (selected) => {
+        switch (selected) {
+          case 0:
+            player.increaseMaxHp(engine);
+            break;
+          case 1:
+            player.increasePower(engine);
+            break;
+          case 2:
+            player.increaseDefense(engine);
+            break;
+        }
+      }
+    )
+  );
+}
+
+function openCharacterScreen(engine: Engine) {
+  const player = engine.player;
+  gui.add(
+    new MessageDialog(
+      'Character',
+      new Message(`Level:            ${player.level}`, Colors.WHITE, undefined, [
+        new Message(`XP:               ${player.xp}`),
+        new Message(`XP to next level: ${player.experienceToNextLevel}`),
+        new Message(`Max HP:           ${player.maxHp}`),
+        new Message(`HP:               ${player.hp}`),
+        new Message(`Attack:           ${player.power}`),
+        new Message(`Defense:          ${player.defense}`),
+      ])
     )
   );
 }

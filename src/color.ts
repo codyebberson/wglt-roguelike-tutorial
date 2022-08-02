@@ -8,6 +8,7 @@ export const PLAYER_ATTACK_COLOR = fromRgb(0xe0, 0xe0, 0xe0);
 export const ENEMY_ATTACK_COLOR = fromRgb(0xff, 0xc0, 0xc0);
 export const NEEDS_TARGET_COLOR = fromRgb(0x3f, 0xff, 0xff);
 export const STATUS_EFFECT_APPLIED_COLOR = fromRgb(0x3f, 0xff, 0x3f);
+export const DESCEND_COLOR = fromRgb(0x9f, 0x3f, 0xff);
 
 export const PLAYER_DIE_COLOR = fromRgb(0xff, 0x30, 0x30);
 export const ENEMY_DIE_COLOR = fromRgb(0xff, 0xa0, 0x30);

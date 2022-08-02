@@ -9,6 +9,10 @@ export function renderBar(console: Console, value: number, max: number, width: n
   console.drawString(0, 40, `HP: ${value}/${max}`, BAR_TEXT_COLOR);
 }
 
+export function renderDungeonLevel(console: Console, level: number, x: number, y: number): void {
+  console.drawString(x, y, `Dungeon level: ${level}`, WHITE);
+}
+
 export function renderNames(console: Console, gameMap: GameMap, x: number, y: number): void {
   console.drawString(
     21,
