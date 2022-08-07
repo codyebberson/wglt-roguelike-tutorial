@@ -1,4 +1,5 @@
 import { Colors, GUI, Key, Message, MessageDialog, Rect, ScrollableMessageDialog, SelectDialog, Terminal } from 'wglt';
+import { Actor } from './actor';
 import { Engine } from './engine';
 import { loadGame, newGame, renderMainMenu, saveGame } from './menu';
 
@@ -76,7 +77,7 @@ function openUseMenu(engine: Engine) {
     new SelectDialog(
       'Select an item to use',
       player.inventory.map((i) => i.name),
-      (selected) => engine.handleAction(player.inventory[selected].getAction(engine, player))
+      (selected) => engine.handleAction(player.inventory[selected].getAction(player))
     )
   );
 }
@@ -102,8 +103,7 @@ function openMessageLog(engine: Engine) {
   );
 }
 
-export function openLevelUpMenu(engine: Engine) {
-  const player = engine.player;
+export function openLevelUpMenu(player: Actor): void {
   gui.add(
     new SelectDialog(
       'Level up! Select an attribute to increase.',
@@ -115,13 +115,13 @@ export function openLevelUpMenu(engine: Engine) {
       (selected) => {
         switch (selected) {
           case 0:
-            player.increaseMaxHp(engine);
+            player.increaseMaxHp();
             break;
           case 1:
-            player.increasePower(engine);
+            player.increasePower();
             break;
           case 2:
-            player.increaseDefense(engine);
+            player.increaseDefense();
             break;
         }
       }

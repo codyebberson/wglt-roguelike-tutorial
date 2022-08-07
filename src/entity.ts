@@ -1,4 +1,5 @@
 import { Color, deserialize, serialize } from 'wglt';
+import { BaseComponent } from './base';
 import { GameMap } from './gamemap';
 
 export const RenderOrder = {
@@ -7,7 +8,7 @@ export const RenderOrder = {
   ACTOR: 2,
 };
 
-export abstract class Entity {
+export abstract class Entity extends BaseComponent {
   constructor(
     public x: number,
     public y: number,
@@ -16,10 +17,13 @@ export abstract class Entity {
     public name: string,
     public blocks = false,
     public renderOrder = 0
-  ) {}
+  ) {
+    super();
+  }
 
   spawn(gameMap: GameMap, x: number, y: number): Entity {
     const clone = deserialize(serialize(this)) as Entity;
+    clone.parent = gameMap;
     clone.x = x;
     clone.y = y;
     gameMap.entities.push(clone);

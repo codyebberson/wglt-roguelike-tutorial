@@ -99,7 +99,7 @@ export function generateDungeon(
 ): GameMap {
   const { rng, player } = engine;
 
-  const dungeon = new GameMap(mapWidth, mapHeight, [player]);
+  const dungeon = new GameMap(engine, mapWidth, mapHeight, [player]);
   dungeon.level = level;
 
   const rooms: Rect[] = [];
@@ -129,6 +129,7 @@ export function generateDungeon(
 
     if (rooms.length === 0) {
       // This is the first room, where the player starts at
+      player.parent = dungeon;
       player.x = center.x;
       player.y = center.y;
     } else {

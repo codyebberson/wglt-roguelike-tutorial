@@ -1,17 +1,21 @@
 import { Cell, Colors, computePath, Console, Point, PointLike, Rect, serializable, Terminal } from 'wglt';
 import { Actor } from './actor';
+import { BaseComponent } from './base';
+import { Engine } from './engine';
 import { Entity } from './entity';
 import { Item } from './item';
 import { floor, stairs, Tile, wall } from './tiles';
 
 @serializable
-export class GameMap {
+export class GameMap extends BaseComponent {
   private tileMap: Tile[][];
   private console: Console;
   level = 0;
   stairsLocation = new Point(0, 0);
 
-  constructor(public width: number, public height: number, public entities: Entity[]) {
+  constructor(engine: Engine, public width: number, public height: number, public entities: Entity[]) {
+    super(engine);
+
     this.tileMap = [];
     this.console = new Console(width, height);
 

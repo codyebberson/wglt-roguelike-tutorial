@@ -1,16 +1,18 @@
 import { capitalize, PointLike, serializable } from 'wglt';
 import { Actor } from './actor';
+import { BaseComponent } from './base';
 import { DESCEND_COLOR, ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
-import { Engine } from './engine';
 import { Item } from './item';
 import { removeFromArray } from './utils';
 
-export abstract class Action {
+export abstract class Action extends BaseComponent {
   target?: PointLike;
 
-  constructor(public actor: Actor) {}
+  constructor(public actor: Actor) {
+    super(actor);
+  }
 
-  abstract perform(engine: Engine): void;
+  abstract perform(): void;
 }
 
 export abstract class ActionWithDirection extends Action {
@@ -21,21 +23,21 @@ export abstract class ActionWithDirection extends Action {
 
 @serializable
 export class MeleeAction extends ActionWithDirection {
-  perform(engine: Engine): void {
+  perform(): void {
     const destX = this.actor.x + this.dx;
     const destY = this.actor.y + this.dy;
-    const target = engine.gameMap.getActor(destX, destY);
+    const target = this.gameMap.getActor(destX, destY);
     if (!target) {
       return;
     }
 
     const damage = this.actor.power - target.defense;
     const attackDesc = capitalize(this.actor.name) + ' attacks ' + target.name;
-    const color = this.actor === engine.player ? PLAYER_ATTACK_COLOR : ENEMY_ATTACK_COLOR;
+    const color = this.actor === this.engine.player ? PLAYER_ATTACK_COLOR : ENEMY_ATTACK_COLOR;
 
     if (damage > 0) {
-      engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
-      target.takeDamage(engine, damage);
+      this.engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
+      target.takeDamage(damage);
     } else {
       console.log(attackDesc + ' but does no damage.', color);
     }
@@ -44,15 +46,15 @@ export class MeleeAction extends ActionWithDirection {
 
 @serializable
 export class MovementAction extends ActionWithDirection {
-  perform(engine: Engine): void {
+  perform(): void {
     const destX = this.actor.x + this.dx;
     const destY = this.actor.y + this.dy;
 
-    if (engine.gameMap.isWall(destX, destY)) {
+    if (this.gameMap.isWall(destX, destY)) {
       // Destination is out of bounds or blocked by a tile
       throw new Error('That way is blocked.');
     }
-    if (engine.gameMap.getBlockingEntity(destX, destY)) {
+    if (this.gameMap.getBlockingEntity(destX, destY)) {
       // Destination is blocked by an actor
       throw new Error('That way is blocked.');
     }
@@ -63,7 +65,7 @@ export class MovementAction extends ActionWithDirection {
 
 @serializable
 export class BumpAction extends ActionWithDirection {
-  perform(engine: Engine): void {
+  perform(): void {
     if (this.dx === 0 && this.dy === 0) {
       // Wait action
       return;
@@ -71,26 +73,26 @@ export class BumpAction extends ActionWithDirection {
 
     const destX = this.actor.x + this.dx;
     const destY = this.actor.y + this.dy;
-    const target = engine.gameMap.getActor(destX, destY);
+    const target = this.gameMap.getActor(destX, destY);
     if (target) {
-      return new MeleeAction(this.actor, this.dx, this.dy).perform(engine);
+      return new MeleeAction(this.actor, this.dx, this.dy).perform();
     } else {
-      return new MovementAction(this.actor, this.dx, this.dy).perform(engine);
+      return new MovementAction(this.actor, this.dx, this.dy).perform();
     }
   }
 }
 
 @serializable
 export class PickupAction extends Action {
-  perform(engine: Engine): void {
-    const item = engine.gameMap.getItem(this.actor.x, this.actor.y);
+  perform(): void {
+    const item = this.gameMap.getItem(this.actor.x, this.actor.y);
     if (!item) {
       throw new Error('There is nothing here to pick up.');
     }
 
     this.actor.inventory.push(item);
-    removeFromArray(engine.gameMap.entities, item);
-    engine.log(`You picked up the ${item.name}!`);
+    removeFromArray(this.gameMap.entities, item);
+    this.engine.log(`You picked up the ${item.name}!`);
   }
 }
 
@@ -100,20 +102,20 @@ export class ItemAction extends Action {
     super(actor);
   }
 
-  perform(engine: Engine): void {
-    this.item.activate(engine, this);
+  perform(): void {
+    this.item.activate(this);
   }
 }
 
 @serializable
 export class TakeStairsAction extends Action {
-  perform(engine: Engine): void {
-    const stairs = engine.gameMap.stairsLocation;
+  perform(): void {
+    const stairs = this.gameMap.stairsLocation;
     if (!stairs || stairs.x !== this.actor.x || stairs.y !== this.actor.y) {
       throw new Error('There are no stairs here.');
     }
 
-    engine.generateFloor();
-    engine.log('You descend the staircase.', DESCEND_COLOR);
+    this.engine.generateFloor();
+    this.engine.log('You descend the staircase.', DESCEND_COLOR);
   }
 }

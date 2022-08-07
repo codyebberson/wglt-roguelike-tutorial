@@ -1,6 +1,7 @@
 import { Color, Colors, RNG, serializable, Terminal } from 'wglt';
 import { Action } from './actions';
 import { Actor } from './actor';
+import { BaseComponent } from './base';
 import { ERROR_COLOR, WHITE } from './color';
 import { GameMap } from './gamemap';
 import { EventHandler, MainGameEventHandler } from './handlers';
@@ -16,19 +17,27 @@ const ROOM_MIN_SIZE = 6;
 const MAX_ROOMS = 30;
 
 @serializable
-export class Engine {
+export class Engine extends BaseComponent {
   readonly rng = new RNG();
   readonly player = new Actor('@', Colors.WHITE, 'Player', true, 30, 30, 2, 5);
   readonly messageLog = new MessageLog();
   eventHandler: EventHandler = new MainGameEventHandler(this);
-  gameMap: GameMap = new GameMap(1, 1, []);
+  gameMap_: GameMap = new GameMap(this, 1, 1, []);
+
+  get engine(): Engine {
+    return this;
+  }
+
+  get gameMap(): GameMap {
+    return this.gameMap_;
+  }
 
   log(text: string, fg: Color = WHITE): void {
     this.messageLog.add(text, fg);
   }
 
   generateFloor(): void {
-    this.gameMap = generateDungeon(
+    this.gameMap_ = generateDungeon(
       this,
       this.gameMap.level + 1,
       MAX_ROOMS,
@@ -43,7 +52,7 @@ export class Engine {
   handleEnemyTurns(): void {
     this.gameMap.actors.forEach((a) => {
       try {
-        a.ai?.perform(this, a);
+        a.ai?.perform(a);
       } catch (err) {
         console.error('Unhandled AI error:', err);
       }
@@ -62,7 +71,7 @@ export class Engine {
     }
 
     try {
-      action.perform(this);
+      action.perform();
     } catch (err) {
       this.log((err as Error).message, ERROR_COLOR);
       return;

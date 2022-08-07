@@ -1,7 +1,6 @@
 import { capitalize, Color, fromRgb, serializable } from 'wglt';
 import { BaseAI } from './ai';
 import { ENEMY_DIE_COLOR, PLAYER_DIE_COLOR } from './color';
-import { Engine } from './engine';
 import { Entity, RenderOrder } from './entity';
 import { Item } from './item';
 import { openLevelUpMenu } from './main';
@@ -35,12 +34,12 @@ export class Actor extends Entity {
     return this.level * 50;
   }
 
-  addXp(engine: Engine, amount: number): void {
+  addXp(amount: number): void {
     this.xp += amount;
-    engine.log(`You gain ${amount} experience points.`);
+    this.engine.log(`You gain ${amount} experience points.`);
 
     if (this.xp >= this.experienceToNextLevel) {
-      openLevelUpMenu(engine);
+      openLevelUpMenu(this);
     }
   }
 
@@ -49,44 +48,44 @@ export class Actor extends Entity {
     this.level++;
   }
 
-  increaseMaxHp(engine: Engine, amount = 20): void {
+  increaseMaxHp(amount = 20): void {
     this.maxHp += amount;
     this.hp_ += amount;
-    engine.log('Your health improves!');
+    this.engine.log('Your health improves!');
     this.levelUp();
   }
 
-  increasePower(engine: Engine, amount = 1): void {
+  increasePower(amount = 1): void {
     this.power += amount;
-    engine.log('You feel stronger!');
+    this.engine.log('You feel stronger!');
     this.levelUp();
   }
 
-  increaseDefense(engine: Engine, amount = 1): void {
+  increaseDefense(amount = 1): void {
     this.defense += amount;
-    engine.log('Your movements are swifter!');
+    this.engine.log('Your movements are swifter!');
     this.levelUp();
   }
 
-  heal(_engine: Engine, amount: number): number {
+  heal(amount: number): number {
     const actualHealAmount = Math.min(amount, this.maxHp - this.hp);
     this.hp_ += actualHealAmount;
     return actualHealAmount;
   }
 
-  takeDamage(engine: Engine, amount: number): void {
+  takeDamage(amount: number): void {
     this.hp_ = Math.max(0, Math.min(this.hp_ - amount, this.maxHp));
     if (this.hp_ === 0) {
-      this.die(engine);
+      this.die();
     }
   }
 
-  die(engine: Engine): void {
-    if (this === engine.player) {
-      engine.log('You died!', PLAYER_DIE_COLOR);
+  die(): void {
+    if (this === this.engine.player) {
+      this.engine.log('You died!', PLAYER_DIE_COLOR);
     } else {
-      engine.log(`${capitalize(this.name)} is dead!`, ENEMY_DIE_COLOR);
-      engine.player.addXp(engine, this.xp);
+      this.engine.log(`${capitalize(this.name)} is dead!`, ENEMY_DIE_COLOR);
+      this.engine.player.addXp(this.xp);
     }
 
     this.char = '%';

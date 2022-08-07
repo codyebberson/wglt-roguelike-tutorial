@@ -1,11 +1,9 @@
 import { Colors, Key, serializable, Terminal } from 'wglt';
 import { Action, BumpAction, PickupAction, TakeStairsAction } from './actions';
+import { BaseComponent } from './base';
 import { RED } from './color';
-import { Engine } from './engine';
 
-export abstract class EventHandler {
-  constructor(readonly engine: Engine) {}
-
+export abstract class EventHandler extends BaseComponent {
   abstract handleEvents(term: Terminal): void;
 
   onRender(_term: Terminal): void {
@@ -40,10 +38,10 @@ export abstract class TargetingHandler extends EventHandler {
   x: number;
   y: number;
 
-  constructor(engine: Engine) {
-    super(engine);
-    this.x = engine.player.x;
-    this.y = engine.player.y;
+  constructor(parent: BaseComponent) {
+    super(parent);
+    this.x = parent.engine.player.x;
+    this.y = parent.engine.player.y;
   }
 
   handleEvents(term: Terminal): void {
@@ -74,8 +72,8 @@ export class LookHandler extends TargetingHandler {
 
 @serializable
 export class SingleRangedAttackHandler extends TargetingHandler {
-  constructor(readonly engine: Engine, readonly action: Action) {
-    super(engine);
+  constructor(readonly action: Action) {
+    super(action);
   }
 
   onSelect(x: number, y: number): void {
@@ -87,8 +85,8 @@ export class SingleRangedAttackHandler extends TargetingHandler {
 
 @serializable
 export class AreaRangedAttackHandler extends TargetingHandler {
-  constructor(readonly engine: Engine, readonly radius: number, readonly action: Action) {
-    super(engine);
+  constructor(readonly radius: number, readonly action: Action) {
+    super(action);
   }
 
   onRender(term: Terminal): void {
