@@ -2,12 +2,15 @@ import { capitalize, Color, fromRgb, serializable } from 'wglt';
 import { BaseAI } from './ai';
 import { ENEMY_DIE_COLOR, PLAYER_DIE_COLOR } from './color';
 import { Entity, RenderOrder } from './entity';
+import { Equipment, EquipmentType } from './equipment';
 import { Item } from './item';
 import { openLevelUpMenu } from './main';
 
 @serializable
 export class Actor extends Entity {
   readonly inventory: Item[] = [];
+  weapon?: Equipment;
+  armor?: Equipment;
   level = 1;
 
   constructor(
@@ -17,8 +20,8 @@ export class Actor extends Entity {
     blocks: boolean,
     public maxHp: number,
     private hp_: number,
-    public defense: number,
-    public power: number,
+    public baseDefense: number,
+    public basePower: number,
     public xp = 0,
     public ai?: BaseAI
   ) {
@@ -32,6 +35,76 @@ export class Actor extends Entity {
 
   get experienceToNextLevel(): number {
     return this.level * 50;
+  }
+
+  get defense(): number {
+    return this.baseDefense + this.defenseBonus;
+  }
+
+  get power(): number {
+    return this.basePower + this.powerBonus;
+  }
+
+  get defenseBonus(): number {
+    let bonus = 0;
+    if (this.weapon) {
+      bonus += this.weapon.defenseBonus;
+    }
+    if (this.armor) {
+      bonus += this.armor.defenseBonus;
+    }
+    return bonus;
+  }
+
+  get powerBonus(): number {
+    let bonus = 0;
+    if (this.weapon) {
+      bonus += this.weapon.powerBonus;
+    }
+    if (this.armor) {
+      bonus += this.armor.powerBonus;
+    }
+    return bonus;
+  }
+
+  isEquipped(item: Item): boolean {
+    return item === this.weapon || item === this.armor;
+  }
+
+  equip(item: Equipment, logMessage = true): void {
+    switch (item.equipmentType) {
+      case EquipmentType.ARMOR:
+        this.unequip(this.armor);
+        this.armor = item;
+        break;
+      case EquipmentType.WEAPON:
+        this.unequip(this.weapon);
+        this.weapon = item;
+        break;
+    }
+
+    if (logMessage) {
+      this.engine.log('You equip the ' + item.name);
+    }
+  }
+
+  unequip(item: Equipment | undefined): void {
+    if (this.weapon && this.weapon === item) {
+      this.weapon = undefined;
+      this.engine.log('You remove the ' + item.name);
+    }
+    if (this.armor && this.armor === item) {
+      this.armor = undefined;
+      this.engine.log('You remove the ' + item.name);
+    }
+  }
+
+  toggleEquip(item: Equipment): void {
+    if (this.isEquipped(item)) {
+      this.unequip(item);
+    } else {
+      this.equip(item);
+    }
   }
 
   addXp(amount: number): void {
@@ -56,13 +129,13 @@ export class Actor extends Entity {
   }
 
   increasePower(amount = 1): void {
-    this.power += amount;
+    this.basePower += amount;
     this.engine.log('You feel stronger!');
     this.levelUp();
   }
 
   increaseDefense(amount = 1): void {
-    this.defense += amount;
+    this.baseDefense += amount;
     this.engine.log('Your movements are swifter!');
     this.levelUp();
   }

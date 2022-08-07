@@ -1,6 +1,7 @@
 import { fromRgb } from 'wglt';
 import { Actor } from './actor';
 import { HostileEnemy } from './ai';
+import { Equipment, EquipmentType } from './equipment';
 import { ConfusionItem, FireballDamageItem, HealingItem, LightningDamageItem } from './item';
 
 export const orc = new Actor(
@@ -57,4 +58,40 @@ export const fireballScroll = new FireballDamageItem(
   'Fireball Scroll', // name
   12, // damage
   3 // radius
+);
+
+export const dagger = new Equipment(
+  '/', // character
+  fromRgb(0, 191, 255), // color
+  'Dagger', // name
+  EquipmentType.WEAPON, // equipment type
+  2, // power
+  0 // defense
+);
+
+export const sword = new Equipment(
+  '/', // character
+  fromRgb(0, 191, 255), // color
+  'Sword', // name
+  EquipmentType.WEAPON, // equipment type
+  4, // power
+  0 // defense
+);
+
+export const leatherArmor = new Equipment(
+  '[', // character
+  fromRgb(139, 69, 19), // color
+  'Leather Armor', // name
+  EquipmentType.ARMOR, // equipment type
+  0, // power
+  1 // defense
+);
+
+export const chainMailArmor = new Equipment(
+  '[', // character
+  fromRgb(139, 69, 19), // color
+  'Chain Mail', // name
+  EquipmentType.ARMOR, // equipment type
+  0, // power
+  3 // defense
 );
