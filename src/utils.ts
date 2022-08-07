@@ -1,16 +1,16 @@
 import { capitalize, Console } from 'wglt';
-import { BAR_EMPTY_COLOR, BAR_FILLED_COLOR, BAR_TEXT_COLOR, WHITE } from './color';
+import { Colors } from './color';
 import { GameMap } from './gamemap';
 
 export function renderBar(console: Console, value: number, max: number, width: number): void {
   const barWidth = Math.round((value / max) * width);
-  console.fillRect(0, 40, width, 1, ' ', BAR_TEXT_COLOR, BAR_EMPTY_COLOR);
-  console.fillRect(0, 40, barWidth, 1, ' ', BAR_TEXT_COLOR, BAR_FILLED_COLOR);
-  console.drawString(0, 40, `HP: ${value}/${max}`, BAR_TEXT_COLOR);
+  console.fillRect(0, 40, width, 1, ' ', Colors.BAR_TEXT, Colors.BAR_EMPTY);
+  console.fillRect(0, 40, barWidth, 1, ' ', Colors.BAR_TEXT, Colors.BAR_FILLED);
+  console.drawString(0, 40, `HP: ${value}/${max}`, Colors.BAR_TEXT);
 }
 
 export function renderDungeonLevel(console: Console, level: number, x: number, y: number): void {
-  console.drawString(x, y, `Dungeon level: ${level}`, WHITE);
+  console.drawString(x, y, `Dungeon level: ${level}`, Colors.WHITE);
 }
 
 export function renderNames(console: Console, gameMap: GameMap, x: number, y: number): void {
@@ -23,7 +23,7 @@ export function renderNames(console: Console, gameMap: GameMap, x: number, y: nu
         .map((e) => e.name)
         .join(', ')
     ),
-    WHITE
+    Colors.WHITE
   );
 }
 

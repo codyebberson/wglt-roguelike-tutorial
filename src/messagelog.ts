@@ -1,5 +1,5 @@
 import { Color, Console, Message, serializable, wordWrap } from 'wglt';
-import { WHITE } from './color';
+import { Colors } from './color';
 
 @serializable
 export class MessageLog {
@@ -10,7 +10,7 @@ export class MessageLog {
    * @param text The message text.
    * @param fg The text color.
    */
-  add(text: string, fg: Color = WHITE): void {
+  add(text: string, fg: Color = Colors.WHITE): void {
     this.messages.push(new Message(text, fg));
   }
 

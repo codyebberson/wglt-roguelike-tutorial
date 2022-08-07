@@ -1,7 +1,7 @@
-import { Colors, Key, serializable, Terminal } from 'wglt';
+import { Key, serializable, Terminal } from 'wglt';
 import { Action, BumpAction, PickupAction, TakeStairsAction } from './actions';
 import { BaseComponent } from './base';
-import { RED } from './color';
+import { Colors } from './color';
 
 export abstract class EventHandler extends BaseComponent {
   abstract handleEvents(term: Terminal): void;
@@ -90,7 +90,13 @@ export class AreaRangedAttackHandler extends TargetingHandler {
   }
 
   onRender(term: Terminal): void {
-    term.drawSingleBox(this.x - this.radius, this.y - this.radius, this.radius * 2 + 1, this.radius * 2 + 1, RED);
+    term.drawSingleBox(
+      this.x - this.radius,
+      this.y - this.radius,
+      this.radius * 2 + 1,
+      this.radius * 2 + 1,
+      Colors.RED
+    );
   }
 
   onSelect(x: number, y: number): void {

@@ -2,7 +2,7 @@ import { Color, serializable } from 'wglt';
 import { Action, ItemAction } from './actions';
 import { Actor } from './actor';
 import { BaseAI, ConfusedEnemy } from './ai';
-import { HEALTH_RECOVERED_COLOR, NEEDS_TARGET_COLOR, RED, STATUS_EFFECT_APPLIED_COLOR } from './color';
+import { Colors } from './color';
 import { Entity, RenderOrder } from './entity';
 import { AreaRangedAttackHandler, SingleRangedAttackHandler } from './handlers';
 import { removeFromArray } from './utils';
@@ -29,7 +29,7 @@ export class HealingItem extends Item {
     const amountRecovered = action.actor.heal(this.amount);
     if (amountRecovered > 0) {
       consume(action.actor, this);
-      this.engine.log(`You consume the ${this.name}, and recover ${amountRecovered} HP!`, HEALTH_RECOVERED_COLOR);
+      this.engine.log(`You consume the ${this.name}, and recover ${amountRecovered} HP!`, Colors.HEALTH_RECOVERED);
     } else {
       throw new Error('Your health is already full.');
     }
@@ -74,7 +74,7 @@ export class ConfusionItem extends Item {
   }
 
   getAction(consumer: Actor): Action | undefined {
-    this.engine.log('Select a target location', NEEDS_TARGET_COLOR);
+    this.engine.log('Select a target location', Colors.NEEDS_TARGET);
     this.engine.eventHandler = new SingleRangedAttackHandler(new ItemAction(consumer, this));
     return undefined;
   }
@@ -98,7 +98,7 @@ export class ConfusionItem extends Item {
 
     this.engine.log(
       `The eyes of the ${target.name} look vacant, as he starts to stumble around!`,
-      STATUS_EFFECT_APPLIED_COLOR
+      Colors.STATUS_EFFECT_APPLIED
     );
     target.ai = new ConfusedEnemy(target.ai as BaseAI, this.numberOfTurns);
     consume(consumer, this);
@@ -112,7 +112,7 @@ export class FireballDamageItem extends Item {
   }
 
   getAction(consumer: Actor): Action | undefined {
-    this.engine.log('Select a target location', NEEDS_TARGET_COLOR);
+    this.engine.log('Select a target location', Colors.NEEDS_TARGET);
     this.engine.eventHandler = new AreaRangedAttackHandler(this.radius, new ItemAction(consumer, this));
     return undefined;
   }
@@ -127,7 +127,10 @@ export class FireballDamageItem extends Item {
     let hit = false;
     for (const actor of this.gameMap.actors) {
       if (actor.distance(x, y) <= this.radius) {
-        this.engine.log(`The ${actor.name} is engulfed in a fiery explosion, taking ${this.damage} damage!`, RED);
+        this.engine.log(
+          `The ${actor.name} is engulfed in a fiery explosion, taking ${this.damage} damage!`,
+          Colors.RED
+        );
         actor.takeDamage(this.damage);
         hit = true;
       }

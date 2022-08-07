@@ -1,7 +1,7 @@
 import { capitalize, PointLike, serializable } from 'wglt';
 import { Actor } from './actor';
 import { BaseComponent } from './base';
-import { DESCEND_COLOR, ENEMY_ATTACK_COLOR, PLAYER_ATTACK_COLOR } from './color';
+import { Colors } from './color';
 import { Item } from './item';
 import { removeFromArray } from './utils';
 
@@ -33,7 +33,7 @@ export class MeleeAction extends ActionWithDirection {
 
     const damage = this.actor.power - target.defense;
     const attackDesc = capitalize(this.actor.name) + ' attacks ' + target.name;
-    const color = this.actor === this.engine.player ? PLAYER_ATTACK_COLOR : ENEMY_ATTACK_COLOR;
+    const color = this.actor === this.engine.player ? Colors.PLAYER_ATTACK : Colors.ENEMY_ATTACK;
 
     if (damage > 0) {
       this.engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
@@ -116,6 +116,6 @@ export class TakeStairsAction extends Action {
     }
 
     this.engine.generateFloor();
-    this.engine.log('You descend the staircase.', DESCEND_COLOR);
+    this.engine.log('You descend the staircase.', Colors.DESCEND);
   }
 }

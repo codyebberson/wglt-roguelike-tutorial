@@ -1,6 +1,6 @@
-import { capitalize, Color, fromRgb, serializable } from 'wglt';
+import { capitalize, Color, serializable } from 'wglt';
 import { BaseAI } from './ai';
-import { ENEMY_DIE_COLOR, PLAYER_DIE_COLOR } from './color';
+import { Colors } from './color';
 import { Entity, RenderOrder } from './entity';
 import { Equipment, EquipmentType } from './equipment';
 import { Item } from './item';
@@ -155,14 +155,14 @@ export class Actor extends Entity {
 
   die(): void {
     if (this === this.engine.player) {
-      this.engine.log('You died!', PLAYER_DIE_COLOR);
+      this.engine.log('You died!', Colors.PLAYER_DIE);
     } else {
-      this.engine.log(`${capitalize(this.name)} is dead!`, ENEMY_DIE_COLOR);
+      this.engine.log(`${capitalize(this.name)} is dead!`, Colors.ENEMY_DIE);
       this.engine.player.addXp(this.xp);
     }
 
     this.char = '%';
-    this.color = fromRgb(191, 0, 0);
+    this.color = Colors.CORPSE;
     this.blocks = false;
     this.ai = undefined;
     this.name = 'remains of ' + this.name;

@@ -1,4 +1,4 @@
-import { fromRgb } from 'wglt';
+import { ColodorePalette } from 'wglt';
 import { Actor } from './actor';
 import { HostileEnemy } from './ai';
 import { Equipment, EquipmentType } from './equipment';
@@ -6,7 +6,7 @@ import { ConfusionItem, FireballDamageItem, HealingItem, LightningDamageItem } f
 
 export const orc = new Actor(
   'o', // character
-  fromRgb(63, 127, 63), // color
+  ColodorePalette.LIGHT_GREEN, // color
   'orc', // name
   true, // blocks
   10, // max hp
@@ -19,7 +19,7 @@ export const orc = new Actor(
 
 export const troll = new Actor(
   'T', // character
-  fromRgb(0, 127, 0), // color
+  ColodorePalette.GREEN, // color
   'troll', // name
   true, // blocks
   16, // max hp
@@ -32,14 +32,14 @@ export const troll = new Actor(
 
 export const healingItem = new HealingItem(
   '!', // character
-  fromRgb(127, 0, 255), // color
+  ColodorePalette.VIOLET, // color
   'Health Potion', // name
   4 // amount
 );
 
 export const lightningScroll = new LightningDamageItem(
   '~', // character
-  fromRgb(255, 255, 0), // color
+  ColodorePalette.YELLOW, // color
   'Lightning Scroll', // name
   20, // damage
   5 // max range
@@ -47,14 +47,14 @@ export const lightningScroll = new LightningDamageItem(
 
 export const confusionScroll = new ConfusionItem(
   '~', // character
-  fromRgb(207, 63, 255), // color
+  ColodorePalette.VIOLET, // color
   'Confusion Scroll', // name
   10 // number of turns
 );
 
 export const fireballScroll = new FireballDamageItem(
   '~', // character
-  fromRgb(255, 0, 0), // color
+  ColodorePalette.RED, // color
   'Fireball Scroll', // name
   12, // damage
   3 // radius
@@ -62,7 +62,7 @@ export const fireballScroll = new FireballDamageItem(
 
 export const dagger = new Equipment(
   '/', // character
-  fromRgb(0, 191, 255), // color
+  ColodorePalette.CYAN, // color
   'Dagger', // name
   EquipmentType.WEAPON, // equipment type
   2, // power
@@ -71,7 +71,7 @@ export const dagger = new Equipment(
 
 export const sword = new Equipment(
   '/', // character
-  fromRgb(0, 191, 255), // color
+  ColodorePalette.CYAN, // color
   'Sword', // name
   EquipmentType.WEAPON, // equipment type
   4, // power
@@ -80,7 +80,7 @@ export const sword = new Equipment(
 
 export const leatherArmor = new Equipment(
   '[', // character
-  fromRgb(139, 69, 19), // color
+  ColodorePalette.BROWN, // color
   'Leather Armor', // name
   EquipmentType.ARMOR, // equipment type
   0, // power
@@ -89,7 +89,7 @@ export const leatherArmor = new Equipment(
 
 export const chainMailArmor = new Equipment(
   '[', // character
-  fromRgb(139, 69, 19), // color
+  ColodorePalette.BROWN, // color
   'Chain Mail', // name
   EquipmentType.ARMOR, // equipment type
   0, // power

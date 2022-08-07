@@ -6,7 +6,17 @@ import { loadGame, newGame, renderMainMenu, saveGame } from './menu';
 const SCREEN_WIDTH = 80;
 const SCREEN_HEIGHT = 45;
 
-const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, SCREEN_WIDTH, SCREEN_HEIGHT);
+const crt = {
+  scale: 3,
+  blur: 0.5,
+  curvature: 0.05,
+  chroma: 0.5,
+  vignette: 0.1,
+  scanlineWidth: 0.75,
+  scanlineIntensity: 0.25,
+};
+
+const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, SCREEN_WIDTH, SCREEN_HEIGHT, { crt });
 const gui = new GUI(term);
 let engine: Engine | undefined = undefined;
 

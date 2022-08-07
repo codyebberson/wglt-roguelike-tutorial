@@ -1,5 +1,5 @@
 import { Console, deserialize, loadImage2x, serialize, Terminal } from 'wglt';
-import { MENU_TITLE_COLOR, WELCOME_TEXT_COLOR } from './color';
+import { Colors } from './color';
 import { Engine } from './engine';
 import { dagger, leatherArmor } from './entities';
 import { Equipment } from './equipment';
@@ -14,14 +14,14 @@ export function renderMainMenu(term: Terminal): void {
 
   const centerX = Math.round(term.width / 2);
   const centerY = Math.round(term.height / 2);
-  term.drawCenteredString(centerX, centerY - 8, 'TOMBS OF ANCIENT KINGS', MENU_TITLE_COLOR);
-  term.drawCenteredString(centerX, term.height - 2, 'By Cody Ebberson', MENU_TITLE_COLOR);
+  term.drawCenteredString(centerX, centerY - 8, 'TOMBS OF ANCIENT KINGS', Colors.MENU_TITLE);
+  term.drawCenteredString(centerX, term.height - 2, 'By Cody Ebberson', Colors.MENU_TITLE);
 }
 
 export function newGame(): Engine {
   const engine = new Engine();
   engine.generateFloor();
-  engine.log('Hello and welcome, adventurer, to yet another dungeon!', WELCOME_TEXT_COLOR);
+  engine.log('Hello and welcome, adventurer, to yet another dungeon!', Colors.WELCOME_TEXT);
 
   const player = engine.player;
   const playerDagger = deserialize(serialize(dagger)) as Equipment;

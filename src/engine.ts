@@ -1,8 +1,8 @@
-import { Color, Colors, RNG, serializable, Terminal } from 'wglt';
+import { Color, RNG, serializable, Terminal } from 'wglt';
 import { Action } from './actions';
 import { Actor } from './actor';
 import { BaseComponent } from './base';
-import { ERROR_COLOR, WHITE } from './color';
+import { Colors } from './color';
 import { GameMap } from './gamemap';
 import { EventHandler, MainGameEventHandler } from './handlers';
 import { MessageLog } from './messagelog';
@@ -32,7 +32,7 @@ export class Engine extends BaseComponent {
     return this.gameMap_;
   }
 
-  log(text: string, fg: Color = WHITE): void {
+  log(text: string, fg: Color = Colors.WHITE): void {
     this.messageLog.add(text, fg);
   }
 
@@ -73,7 +73,7 @@ export class Engine extends BaseComponent {
     try {
       action.perform();
     } catch (err) {
-      this.log((err as Error).message, ERROR_COLOR);
+      this.log((err as Error).message, Colors.ERROR);
       return;
     }
 

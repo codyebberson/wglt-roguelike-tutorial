@@ -1,4 +1,5 @@
-import { Cell, Colors, fromRgb } from 'wglt';
+import { Cell } from 'wglt';
+import { Colors } from './color';
 
 export interface Tile {
   walkable: boolean;
@@ -10,20 +11,20 @@ export interface Tile {
 export const floor = {
   walkable: true,
   transparent: true,
-  dark: new Cell(0, 0, ' ', Colors.WHITE, fromRgb(50, 50, 150)),
-  light: new Cell(0, 0, ' ', Colors.WHITE, fromRgb(200, 180, 50)),
+  dark: new Cell(0, 0, '.', Colors.DARK_GRAY, Colors.BLACK),
+  light: new Cell(0, 0, '.', Colors.LIGHT_GRAY, Colors.BLACK),
 };
 
 export const wall = {
   walkable: false,
   transparent: false,
-  dark: new Cell(0, 0, ' ', Colors.WHITE, fromRgb(0, 0, 100)),
-  light: new Cell(0, 0, ' ', Colors.WHITE, fromRgb(130, 110, 50)),
+  dark: new Cell(0, 0, '#', Colors.DARK_GRAY, Colors.BLACK),
+  light: new Cell(0, 0, '#', Colors.LIGHT_GRAY, Colors.BLACK),
 };
 
 export const stairs = {
   walkable: false,
   transparent: false,
-  dark: new Cell(0, 0, '>', fromRgb(0, 0, 100), fromRgb(50, 50, 150)),
-  light: new Cell(0, 0, '>', Colors.WHITE, fromRgb(200, 180, 50)),
+  dark: new Cell(0, 0, '>', Colors.DARK_GRAY, Colors.BLACK),
+  light: new Cell(0, 0, '>', Colors.WHITE, Colors.BLACK),
 };
