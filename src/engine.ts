@@ -14,8 +14,6 @@ const MAP_HEIGHT = 38;
 const ROOM_MAX_SIZE = 10;
 const ROOM_MIN_SIZE = 6;
 const MAX_ROOMS = 30;
-const MAX_MONSTERS_PER_ROOM = 2;
-const MAX_ITEMS_PER_ROOM = 2;
 
 @serializable
 export class Engine {
@@ -37,9 +35,7 @@ export class Engine {
       ROOM_MIN_SIZE,
       ROOM_MAX_SIZE,
       MAP_WIDTH,
-      MAP_HEIGHT,
-      MAX_MONSTERS_PER_ROOM,
-      MAX_ITEMS_PER_ROOM
+      MAP_HEIGHT
     );
     this.updateFov();
   }
