@@ -15,21 +15,51 @@ export abstract class EventHandler extends BaseComponent {
 @serializable
 export class MainGameEventHandler extends EventHandler {
   handleEvents(term: Terminal): void {
+    const { player, path } = this.engine;
     const moveKey = term.getMovementKey();
     let action: Action | undefined = undefined;
 
     if (term.isKeyDown(Key.VK_SHIFT_LEFT) && term.isKeyPressed(Key.VK_PERIOD)) {
-      action = new TakeStairsAction(this.engine.player);
+      action = new TakeStairsAction(player);
     } else if (moveKey) {
       action = new BumpAction(this.engine.player, moveKey.x, moveKey.y);
     } else if (term.isKeyPressed(Key.VK_G)) {
-      action = new PickupAction(this.engine.player);
+      action = new PickupAction(player);
     } else if (term.isKeyPressed(Key.VK_SLASH)) {
       this.engine.eventHandler = new LookHandler(this.engine);
     }
 
+    if (path) {
+      while (
+        this.engine.pathIndex < path.length &&
+        player.x === path[this.engine.pathIndex].x &&
+        player.y === path[this.engine.pathIndex].y
+      ) {
+        this.engine.pathIndex++;
+      }
+      if (this.engine.pathIndex < path.length) {
+        action = new BumpAction(
+          this.engine.player,
+          path[this.engine.pathIndex].x - player.x,
+          path[this.engine.pathIndex].y - player.y
+        );
+      }
+    }
+
     if (action) {
       this.engine.handleAction(action);
+    }
+  }
+
+  onRender(term: Terminal): void {
+    const dest = { x: term.mouse.x, y: term.mouse.y };
+    const mousePath = this.gameMap.computePath(this.engine.player, dest);
+    if (mousePath) {
+      this.gameMap.renderPath(term, mousePath);
+      if (term.mouse.buttons[0].upCount === 1) {
+        this.engine.path = mousePath;
+        this.engine.pathIndex = 0;
+      }
     }
   }
 }

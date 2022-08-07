@@ -1,4 +1,4 @@
-import { Color, RNG, serializable, Terminal } from 'wglt';
+import { Cell, Color, RNG, serializable, Terminal } from 'wglt';
 import { Action } from './actions';
 import { Actor } from './actor';
 import { BaseComponent } from './base';
@@ -23,6 +23,8 @@ export class Engine extends BaseComponent {
   readonly messageLog = new MessageLog();
   eventHandler: EventHandler = new MainGameEventHandler(this);
   gameMap_: GameMap = new GameMap(this, 1, 1, []);
+  path?: Cell[];
+  pathIndex = 0;
 
   get engine(): Engine {
     return this;
@@ -74,6 +76,8 @@ export class Engine extends BaseComponent {
       action.perform();
     } catch (err) {
       this.log((err as Error).message, Colors.ERROR);
+      this.path = undefined;
+      this.pathIndex = 0;
       return;
     }
 

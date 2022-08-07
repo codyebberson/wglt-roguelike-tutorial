@@ -1,6 +1,7 @@
-import { Cell, Colors, computePath, Console, Point, PointLike, Rect, serializable, Terminal } from 'wglt';
+import { Cell, computePath, Console, Point, PointLike, Rect, serializable, Terminal } from 'wglt';
 import { Actor } from './actor';
 import { BaseComponent } from './base';
+import { Colors } from './color';
 import { Engine } from './engine';
 import { Entity } from './entity';
 import { Item } from './item';
@@ -110,6 +111,16 @@ export class GameMap extends BaseComponent {
     for (const entity of this.entities) {
       if (this.isVisible(entity.x, entity.y)) {
         term.drawChar(entity.x, entity.y, entity.char, entity.color);
+      }
+    }
+  }
+
+  renderPath(console: Console, path: Cell[]): void {
+    for (let i = 1; i < path.length; i++) {
+      const step = path[i];
+      const cell = console.getCell(step.x, step.y);
+      if (cell) {
+        cell.setBackground(Colors.DARK_GRAY);
       }
     }
   }
