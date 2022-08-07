@@ -76,7 +76,7 @@ function openUseMenu(engine: Engine) {
   gui.add(
     new SelectDialog(
       'Select an item to use',
-      player.inventory.map((i) => i.name),
+      player.inventory.map((i) => i.name + (player.isEquipped(i) ? ' (equipped)' : '')),
       (selected) => engine.handleAction(player.inventory[selected].getAction(player))
     )
   );

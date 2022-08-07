@@ -19,7 +19,7 @@ const MAX_ROOMS = 30;
 @serializable
 export class Engine extends BaseComponent {
   readonly rng = new RNG();
-  readonly player = new Actor('@', Colors.WHITE, 'Player', true, 30, 30, 2, 5);
+  readonly player = new Actor('@', Colors.WHITE, 'Player', true, 30, 30, 1, 2);
   readonly messageLog = new MessageLog();
   eventHandler: EventHandler = new MainGameEventHandler(this);
   gameMap_: GameMap = new GameMap(this, 1, 1, []);

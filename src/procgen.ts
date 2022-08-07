@@ -1,7 +1,16 @@
 import { Rect, RNG } from 'wglt';
 import { Actor } from './actor';
 import { Engine } from './engine';
-import { confusionScroll, fireballScroll, healingItem, lightningScroll, orc, troll } from './entities';
+import {
+  chainMailArmor,
+  confusionScroll,
+  fireballScroll,
+  healingItem,
+  lightningScroll,
+  orc,
+  sword,
+  troll,
+} from './entities';
 import { GameMap } from './gamemap';
 import { Item } from './item';
 
@@ -39,6 +48,7 @@ const itemChances: EntityProbabilityTable<Item> = [
       [healingItem, 35],
       [confusionScroll, 10],
       [lightningScroll, 25],
+      [sword, 5],
     ],
   ],
   [
@@ -48,6 +58,8 @@ const itemChances: EntityProbabilityTable<Item> = [
       [confusionScroll, 10],
       [lightningScroll, 25],
       [fireballScroll, 25],
+      [sword, 5],
+      [chainMailArmor, 15],
     ],
   ],
 ];

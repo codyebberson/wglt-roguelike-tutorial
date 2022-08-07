@@ -1,6 +1,8 @@
 import { Console, deserialize, loadImage2x, serialize, Terminal } from 'wglt';
 import { MENU_TITLE_COLOR, WELCOME_TEXT_COLOR } from './color';
 import { Engine } from './engine';
+import { dagger, leatherArmor } from './entities';
+import { Equipment } from './equipment';
 
 let img = undefined as Console | undefined;
 loadImage2x('menu.png', (result) => (img = result));
@@ -20,6 +22,20 @@ export function newGame(): Engine {
   const engine = new Engine();
   engine.generateFloor();
   engine.log('Hello and welcome, adventurer, to yet another dungeon!', WELCOME_TEXT_COLOR);
+
+  const player = engine.player;
+  const playerDagger = deserialize(serialize(dagger)) as Equipment;
+  const playerArmor = deserialize(serialize(leatherArmor)) as Equipment;
+
+  dagger.parent = player;
+  leatherArmor.parent = player;
+
+  player.inventory.push(playerDagger);
+  player.equip(playerDagger);
+
+  player.inventory.push(playerArmor);
+  player.equip(playerArmor);
+
   return engine;
 }
 
