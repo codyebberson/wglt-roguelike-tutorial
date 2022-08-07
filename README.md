@@ -105,3 +105,33 @@ Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-11/
 Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/23
 
 ![image](https://user-images.githubusercontent.com/749094/182412316-89cddd0c-a8c0-498b-bce4-20a8268657e6.png)
+
+### Part 12 - Increasing Difficulty
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-12/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/24
+
+![image](https://user-images.githubusercontent.com/749094/183299243-905e7ee3-919b-4afa-b0f9-534064342e14.png)
+
+### Part 13 - Delving into the Dungeon
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/part-13/
+
+Pull Request: https://github.com/codyebberson/wglt-roguelike-tutorial/pull/25
+
+![image](https://user-images.githubusercontent.com/749094/183303053-400fc69d-026c-4372-a9e4-dcf7fe16ac33.png)
+
+### Extras
+
+Tutorial: http://rogueliketutorials.com/tutorials/tcod/v2/extras/traditional-look/
+
+Bonus features:
+
+- Traditional ASCII characters
+- [Colodore palette](https://www.pepto.de/projects/colorvic/)
+- CRT effect (screen curvature, scanlines, etc)
+- Sound effects with [ZzFX](https://killedbyapixel.github.io/ZzFX/)
+- Path finding and mouse controls
+
+![Final screenshot](screenshot.png)
