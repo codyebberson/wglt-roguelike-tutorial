@@ -3,7 +3,9 @@ import { Actor } from './actor';
 import { BaseComponent } from './base';
 import { Colors } from './color';
 import { Item } from './item';
+import { hitSound, nextLevelSound, pickupSound, walkSound } from './sounds';
 import { removeFromArray } from './utils';
+import { zzfx } from './zzfx/zzfx';
 
 export abstract class Action extends BaseComponent {
   target?: PointLike;
@@ -38,6 +40,7 @@ export class MeleeAction extends ActionWithDirection {
     if (damage > 0) {
       this.engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
       target.takeDamage(damage);
+      zzfx(...hitSound);
     } else {
       console.log(attackDesc + ' but does no damage.', color);
     }
@@ -60,6 +63,10 @@ export class MovementAction extends ActionWithDirection {
     }
 
     this.actor.move(this.dx, this.dy);
+
+    if (this.actor === this.engine.player) {
+      zzfx(...walkSound);
+    }
   }
 }
 
@@ -93,6 +100,7 @@ export class PickupAction extends Action {
     this.actor.inventory.push(item);
     removeFromArray(this.gameMap.entities, item);
     this.engine.log(`You picked up the ${item.name}!`);
+    zzfx(...pickupSound);
   }
 }
 
@@ -117,5 +125,6 @@ export class TakeStairsAction extends Action {
 
     this.engine.generateFloor();
     this.engine.log('You descend the staircase.', Colors.DESCEND);
+    zzfx(...nextLevelSound);
   }
 }

@@ -5,7 +5,9 @@ import { BaseAI, ConfusedEnemy } from './ai';
 import { Colors } from './color';
 import { Entity, RenderOrder } from './entity';
 import { AreaRangedAttackHandler, SingleRangedAttackHandler } from './handlers';
+import { healSound } from './sounds';
 import { removeFromArray } from './utils';
+import { zzfx } from './zzfx/zzfx';
 
 export abstract class Item extends Entity {
   constructor(char: string, color: Color, name: string) {
@@ -30,6 +32,7 @@ export class HealingItem extends Item {
     if (amountRecovered > 0) {
       consume(action.actor, this);
       this.engine.log(`You consume the ${this.name}, and recover ${amountRecovered} HP!`, Colors.HEALTH_RECOVERED);
+      zzfx(...healSound);
     } else {
       throw new Error('Your health is already full.');
     }

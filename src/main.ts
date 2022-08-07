@@ -2,6 +2,8 @@ import { Colors, GUI, Key, Message, MessageDialog, Rect, ScrollableMessageDialog
 import { Actor } from './actor';
 import { Engine } from './engine';
 import { loadGame, newGame, renderMainMenu, saveGame } from './menu';
+import { levelUpSound, menuBlipSound } from './sounds';
+import { zzfx } from './zzfx/zzfx';
 
 const SCREEN_WIDTH = 80;
 const SCREEN_HEIGHT = 45;
@@ -57,16 +59,20 @@ function openMainMenu() {
       switch (selected) {
         case 0:
           setEngine(newGame());
+          zzfx(...menuBlipSound);
           break;
         case 1:
           // Just close the menu
+          zzfx(...menuBlipSound);
           break;
         case 2:
           saveGame(engine!);
+          zzfx(...menuBlipSound);
           break;
         case 3:
           try {
             setEngine(loadGame());
+            zzfx(...menuBlipSound);
           } catch (err) {
             gui.add(new MessageDialog('Error', 'Could not load saved game'));
           }
@@ -87,9 +93,13 @@ function openUseMenu(engine: Engine) {
     new SelectDialog(
       'Select an item to use',
       player.inventory.map((i) => i.name + (player.isEquipped(i) ? ' (equipped)' : '')),
-      (selected) => engine.handleAction(player.inventory[selected].getAction(player))
+      (selected) => {
+        engine.handleAction(player.inventory[selected].getAction(player));
+        zzfx(...menuBlipSound);
+      }
     )
   );
+  zzfx(...menuBlipSound);
 }
 
 function openDropMenu(engine: Engine) {
@@ -98,9 +108,13 @@ function openDropMenu(engine: Engine) {
     new SelectDialog(
       'Select an item to drop',
       player.inventory.map((i) => i.name),
-      (selected) => player.inventory.splice(selected, 1)
+      (selected) => {
+        player.inventory.splice(selected, 1);
+        zzfx(...menuBlipSound);
+      }
     )
   );
+  zzfx(...menuBlipSound);
 }
 
 function openMessageLog(engine: Engine) {
@@ -111,6 +125,7 @@ function openMessageLog(engine: Engine) {
       new Message(undefined, undefined, undefined, engine.messageLog.messages)
     )
   );
+  zzfx(...menuBlipSound);
 }
 
 export function openLevelUpMenu(player: Actor): void {
@@ -134,9 +149,11 @@ export function openLevelUpMenu(player: Actor): void {
             player.increaseDefense();
             break;
         }
+        zzfx(...levelUpSound);
       }
     )
   );
+  zzfx(...menuBlipSound);
 }
 
 function openCharacterScreen(engine: Engine) {
@@ -154,4 +171,5 @@ function openCharacterScreen(engine: Engine) {
       ])
     )
   );
+  zzfx(...menuBlipSound);
 }
