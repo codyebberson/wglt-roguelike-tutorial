@@ -51,6 +51,11 @@ export class Engine extends BaseComponent {
     this.updateFov();
   }
 
+  setPath(newPath: Cell[] | undefined): void {
+    this.path = newPath;
+    this.pathIndex = 0;
+  }
+
   handleEnemyTurns(): void {
     this.gameMap.actors.forEach((a) => {
       try {
@@ -76,8 +81,7 @@ export class Engine extends BaseComponent {
       action.perform();
     } catch (err) {
       this.log((err as Error).message, Colors.ERROR);
-      this.path = undefined;
-      this.pathIndex = 0;
+      this.setPath(undefined);
       return;
     }
 

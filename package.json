@@ -9,7 +9,7 @@
   "devDependencies": {
     "typescript": "4.7.4",
     "vite": "3.0.4",
-    "wglt": "0.4.6"
+    "wglt": "0.5.1"
   },
   "prettier": {
     "printWidth": 120,

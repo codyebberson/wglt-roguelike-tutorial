@@ -39,6 +39,7 @@ export class MeleeAction extends ActionWithDirection {
 
     if (damage > 0) {
       this.engine.log(attackDesc + ' for ' + damage + ' hit points!', color);
+      this.engine.setPath(undefined);
       target.takeDamage(damage);
       zzfx(...hitSound);
     } else {

@@ -1,5 +1,5 @@
 import { Key, serializable, Terminal } from 'wglt';
-import { Action, BumpAction, PickupAction, TakeStairsAction } from './actions';
+import { Action, BumpAction, MovementAction, PickupAction, TakeStairsAction } from './actions';
 import { BaseComponent } from './base';
 import { Colors } from './color';
 
@@ -27,6 +27,8 @@ export class MainGameEventHandler extends EventHandler {
       action = new PickupAction(player);
     } else if (term.isKeyPressed(Key.VK_SLASH)) {
       this.engine.eventHandler = new LookHandler(this.engine);
+    } else if (term.mouse.x === player.x && term.mouse.y === player.y && term.mouse.buttons.get(0).isClicked()) {
+      action = new BumpAction(player, 0, 0);
     }
 
     if (path) {
@@ -56,7 +58,7 @@ export class MainGameEventHandler extends EventHandler {
     const mousePath = this.gameMap.computePath(this.engine.player, dest);
     if (mousePath) {
       this.gameMap.renderPath(term, mousePath);
-      if (term.mouse.buttons[0].upCount === 1) {
+      if (term.mouse.buttons.get(0).isClicked()) {
         this.engine.path = mousePath;
         this.engine.pathIndex = 0;
       }

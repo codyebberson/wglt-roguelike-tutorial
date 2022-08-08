@@ -8,18 +8,25 @@ import { zzfx } from './zzfx/zzfx';
 const SCREEN_WIDTH = 80;
 const SCREEN_HEIGHT = 45;
 
+const maxFps = 30;
+
 const crt = {
   scale: 3,
   blur: 0.5,
-  curvature: 0.05,
+  curvature: 0.12,
   chroma: 0.5,
   vignette: 0.1,
   scanlineWidth: 0.75,
   scanlineIntensity: 0.25,
 };
 
-const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, SCREEN_WIDTH, SCREEN_HEIGHT, { crt });
+const term = new Terminal(document.querySelector('canvas') as HTMLCanvasElement, SCREEN_WIDTH, SCREEN_HEIGHT, {
+  maxFps,
+  crt,
+});
+
 const gui = new GUI(term);
+
 let engine: Engine | undefined = undefined;
 
 openMainMenu();
