@@ -1,5 +1,5 @@
 import { Key, serializable, Terminal } from 'wglt';
-import { Action, BumpAction, MovementAction, PickupAction, TakeStairsAction } from './actions';
+import { Action, BumpAction, PickupAction, TakeStairsAction } from './actions';
 import { BaseComponent } from './base';
 import { Colors } from './color';
 
